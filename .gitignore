@@ -3,6 +3,11 @@
 /node_modules
 /build
 
+./code_git_ssh.pub
+./code_git_ssh
+code_git_ssh
+code_git_ssh.pub
+
 # Logs
 logs
 *.log
