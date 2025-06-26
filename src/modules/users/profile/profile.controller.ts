@@ -13,16 +13,11 @@ import { ProfileService } from './profile.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { Request } from 'express';
-import { JwtAuthGuard } from 'src/core/guards/jwtAuth';
+import { JwtAuthGuard } from 'src/core/guards/jwtInCookieAuth';
 
 @Controller('profile')
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
-
-  @Post('create')
-  create(@Body() createProfileDto: CreateProfileDto) {
-    return this.profileService.create(createProfileDto);
-  }
 
   @Get('get-all')
   findAll() {
@@ -32,7 +27,7 @@ export class ProfileController {
   @Get('get-one/:id')
   findOne(@Param('id') id: string) {
     return this.profileService.findOne(id);
-    
+
   }
   @Get('may-accaunt')
   @UseGuards(JwtAuthGuard)
@@ -40,6 +35,7 @@ export class ProfileController {
     const { id } = req['user'];
     return this.profileService.findByUserId(id);
   }
+  
   @Patch('update-one/:id')
   update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto) {
     return this.profileService.update(id, updateProfileDto);

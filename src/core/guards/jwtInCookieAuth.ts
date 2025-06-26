@@ -1,4 +1,3 @@
-// jwt-auth.guard.ts
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtConnectionService } from '../micro-service/jwt/jwt.connection.service';
 

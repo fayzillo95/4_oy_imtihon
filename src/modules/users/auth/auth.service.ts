@@ -35,17 +35,17 @@ export class AuthService {
     try {
       const { email, code } = await this.jwtService.verfiySessionTken(token)
       const userdata = await this.redisService.getValue<CreateUserDto>(email)
-      console.log(email,code,userdata)
+
       if (!email || userdata === null) {
         throw new BadRequestException("Invalid email or expires url !")
       }
       const newUser = await this.userService.create(userdata,true)
       const newProfile = await this.profileService.create({user_id : newUser.id})
-      console.log(newProfile.toJSON())
+
       return {
         accessToken: await this.jwtService.getAccessToken({ id: newUser.id, role: newUser.role }),
         refreshToken: await this.jwtService.getRefreshToken({ id: newUser.id, role: newUser.role }),
-        newUser,
+        newUser,    
       }
     } catch (error) {
       throw new BadRequestException(`Invalid url or expires token ${error.name}`)

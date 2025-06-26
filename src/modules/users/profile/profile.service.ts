@@ -43,7 +43,6 @@ export class ProfileService {
   async update(id: string, updateProfileDto: UpdateProfileDto) {
     const exists = await this.findOne(id);
     if (!exists) throw new NotFoundException('Profile not found !');
-    console.log(updateProfileDto)
     const updatetedProfile = await this.profileModel.update(
       { ...updateProfileDto },
       {
