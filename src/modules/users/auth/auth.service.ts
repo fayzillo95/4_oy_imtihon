@@ -6,6 +6,7 @@ import { CreateUserDto } from '../user/dto/create-user.dto';
 import { LoginAuthDto } from './dto/login.auth.dto';
 import { RedisConnectService } from 'src/core/micro-service/cache/redis.connection.service';
 import { ConfigService } from '@nestjs/config';
+import { ProfileService } from '../profile/profile.service';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +15,7 @@ export class AuthService {
     private readonly mailerService: MailerConnectionService,
     private readonly userService: UserService,
     private readonly redisService: RedisConnectService,
+    private readonly profileService : ProfileService,
     private readonly config: ConfigService
   ) { }
 
@@ -38,12 +40,12 @@ export class AuthService {
         throw new BadRequestException("Invalid email or expires url !")
       }
       const newUser = await this.userService.create(userdata,true)
-      const removeKeysts = await this.redisService.removeItem(email)
-      console.log(removeKeysts)
+      const newProfile = await this.profileService.create({user_id : newUser.id})
+      console.log(newProfile.toJSON())
       return {
         accessToken: await this.jwtService.getAccessToken({ id: newUser.id, role: newUser.role }),
         refreshToken: await this.jwtService.getRefreshToken({ id: newUser.id, role: newUser.role }),
-        newUser
+        newUser,
       }
     } catch (error) {
       throw new BadRequestException(`Invalid url or expires token ${error.name}`)

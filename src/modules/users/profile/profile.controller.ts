@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { Request } from 'express';
+import { JwtAuthGuard } from 'src/core/guards/jwtAuth';
 
 @Controller('profile')
 export class ProfileController {
@@ -30,11 +32,13 @@ export class ProfileController {
   @Get('get-one/:id')
   findOne(@Param('id') id: string) {
     return this.profileService.findOne(id);
+    
   }
   @Get('may-accaunt')
+  @UseGuards(JwtAuthGuard)
   getMyProfile(@Req() req: Request) {
     const { id } = req['user'];
-    return this.profileService.findOne(id);
+    return this.profileService.findByUserId(id);
   }
   @Patch('update-one/:id')
   update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto) {

@@ -5,6 +5,7 @@ import { UserModule } from '../user/user.module';
 import { MailerConnectionModule } from 'src/core/micro-service/email/mailer.connection.module';
 import { JwtConnectionModule } from 'src/core/micro-service/jwt/jwt.connection.module';
 import { RedisConnectionModule } from 'src/core/micro-service/cache/redis.connection.module';
+import { ProfileModule } from '../profile/profile.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { RedisConnectionModule } from 'src/core/micro-service/cache/redis.connec
     MailerConnectionModule,
     JwtConnectionModule,
     RedisConnectionModule,
+    ProfileModule
   ],
   controllers: [AuthController],
   providers: [AuthService],
