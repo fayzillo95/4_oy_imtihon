@@ -14,11 +14,11 @@ import { CategoryModule } from './modules/file.menegment/categories/category.mod
       envFilePath: ['.env'],
     }),
     CoreInitModule,
-    // UserModule,
-    // AuthModule,
+    UserModule,
+    AuthModule,
     // ProfileModule,
-    MoviesCounterModule,
-    CategoryModule
+    // MoviesCounterModule,
+    // CategoryModule
   ],
 })
 export class AppModule {}

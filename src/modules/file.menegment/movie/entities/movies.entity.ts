@@ -7,7 +7,6 @@ import {
   Default,
   ForeignKey,
   BelongsTo,
-  HasOne,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { QualityType, Subscription_type } from 'src/core/types/movies.types';

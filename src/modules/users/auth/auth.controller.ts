@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { LoginAuthDto } from './dto/login.auth.dto';
@@ -10,6 +10,10 @@ export class AuthController {
   @Post('register')
   register(@Body() data: CreateUserDto) {
     return this.authService.otpRegister(data);
+  }
+  @Get("verify/:token")
+  verify(@Param("token") token : string){
+    return this.authService.verificationUserAndRegister(token)
   }
   @Post('login')
   login(@Body() data: LoginAuthDto) {

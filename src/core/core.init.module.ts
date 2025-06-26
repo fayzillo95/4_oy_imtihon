@@ -12,9 +12,9 @@ import { join } from 'path';
       serveRoot : "/posters"
     }),
     DatabaseConnectModule,
-    // RedisConnectionModule,
-    // MailerConnectionModule,
-    // JwtConnectionModule,
+    RedisConnectionModule,
+    MailerConnectionModule,
+    JwtConnectionModule,
   ],
 })
 export class CoreInitModule {}

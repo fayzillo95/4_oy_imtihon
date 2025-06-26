@@ -13,13 +13,7 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const exists = [
-      await this.findByEmail(createUserDto.email),
-      await this.findByUsername(createUserDto.username),
-    ];
-    if (exists[0] || exists[1])
-      throw new ConflictException('User already exists !');
-
+    await this.checkExists(createUserDto)
     const newUser = await this.userModel.create({ ...createUserDto });
     return newUser.toJSON();
   }
@@ -33,6 +27,17 @@ export class UserService {
     });
     return exists;
   }
+  async checkExists(createUserDto : CreateUserDto){
+    const exists = [
+      await this.findByEmail(createUserDto.email),
+      await this.findByUsername(createUserDto.username),
+    ];
+    if (exists[0])
+      throw new ConflictException('User eamil already exists !');
+    if(exists[1])
+      throw new ConflictException("User email already exists !")
+  }
+
   findAll() {
     return `This action returns all users`;
   }

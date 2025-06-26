@@ -24,15 +24,11 @@ export class RedisConnectService implements OnModuleInit, OnModuleDestroy {
       console.log('Redis disconnected');
     }
   }
-
-  async incrementCounter(key: string): Promise<number> {
-    return await this.redisClient.incr(key);
-  }
   async setItem(key: string, value: object) {
     return this.redisClient.set(key, JSON.stringify(value), { EX: 600 });
   }
-  async getCounter(key: string): Promise<number> {
+  async getValue<T>(key: string): Promise<T | null> {
     const value = await this.redisClient.get(key);
-    return value ? JSON.parse(value) : 0;
+    return value ? JSON.parse(value) : null;
   }
 }

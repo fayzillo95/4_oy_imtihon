@@ -23,9 +23,9 @@ import { User } from 'src/modules/users/user/entities/user.entity';
         models: [
             User, 
             Profile, 
-            MovieCategory, 
-            Movies, 
-            MovieFile,
+            // MovieCategory, 
+            // Movies, 
+            // MovieFile,
         ],
       }),
     }),

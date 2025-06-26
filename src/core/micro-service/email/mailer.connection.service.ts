@@ -13,15 +13,13 @@ export class MailerConnectionService {
     },
   });
 
-  async sendRegisterVerify(email: string) {
+  async sendRegisterVerify(email: string,url : string) {
     const result = await this.email.sendMail({
       to: email,
       from: "Auth Service : '<fayzillofn30@gmail.com>'",
       subject: 'Auth Service : "<fayzillofn30@gmail.com>"',
-      text: 'Salom : code > 123456',
       html: `
-              <h1> Register verifiy code </h1>
-              <p> Code : 123456 </p>
+              <h1> Register verifiy url <a href="${url}">Sign</a> </h1>
       `,
     });
     return result;
