@@ -1,17 +1,20 @@
 import { Module } from '@nestjs/common';
-import { DatabaseCounterModule } from './macro-service/database/databse.counter.module';
-import { RedisCounterModule } from './macro-service/cache/redis.counter.module';
-import { MailerCounterModule } from './micro-service/email/mailer.counter.module';
-import { JwtCouterModule } from './micro-service/jwt/jwt.couter.module';
-
+import { DatabaseConnectModule } from './micro-service/database/databse.connect.module';
+import { RedisConnectionModule } from './micro-service/cache/redis.connection.module';
+import { MailerConnectionModule } from './micro-service/email/mailer.connection.module';
+import { JwtConnectionModule } from './micro-service/jwt/jwt.connection.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 @Module({
-
   imports: [
-    DatabaseCounterModule,
-    RedisCounterModule,
-    MailerCounterModule,
-    JwtCouterModule,
+    ServeStaticModule.forRoot({
+      rootPath : join(process.cwd(),"uploads","posters"),
+      serveRoot : "/posters"
+    }),
+    DatabaseConnectModule,
+    // RedisConnectionModule,
+    // MailerConnectionModule,
+    // JwtConnectionModule,
   ],
-
 })
-export class CoreInitModule { }
+export class CoreInitModule {}

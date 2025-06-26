@@ -1,12 +1,10 @@
-// subscription.model.ts
 
 export enum Subscription_type {
-  free = "free",
-  gold = "gold",
-  premium = "premium",
+  free = 'free',
+  gold = 'gold',
+  premium = 'premium',
 }
 
-// Object sifatida yozilgan to‘liq subscription muddati va narxlari
 export const SubscriptionTime = {
   month: {
     days: 30,
@@ -22,5 +20,4 @@ export const SubscriptionTime = {
   },
 } as const;
 
-// Type chiqarsang ham bo‘ladi (keyof typeof SubscriptionTime bilan)
-export type SubscriptionPeriod = keyof typeof SubscriptionTime;
+export enum QualityType{'240p'="240p", '360p'="360p", '480p'="480p", '720p'="720p", '1080p'="1080p", '4K'='4K'}

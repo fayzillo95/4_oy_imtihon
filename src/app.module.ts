@@ -1,19 +1,24 @@
 import { Module } from '@nestjs/common';
 import { CoreInitModule } from './core/core.init.module';
-import { UsersModule } from './modules/performance/users/users.module';
+import { UserModule } from './modules/users/user/user.module';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './modules/performance/auth/auth.module';
-import { ProfileModule } from './modules/performance/profile/profile.module';
-import { MoviesCounterModule } from './modules/file.menegment/movie/movies.counter.module';
+import { AuthModule } from './modules/users/auth/auth.module';
+import { ProfileModule } from './modules/users/profile/profile.module';
+import { MoviesCounterModule } from './modules/file.menegment/movie/movies.module';
+import { CategoryModule } from './modules/file.menegment/categories/category.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal : true,
-      envFilePath : [".env"]
+      isGlobal: true,
+      envFilePath: ['.env'],
     }),
-    CoreInitModule, 
-    UsersModule, AuthModule, ProfileModule, MoviesCounterModule,
+    CoreInitModule,
+    // UserModule,
+    // AuthModule,
+    // ProfileModule,
+    MoviesCounterModule,
+    CategoryModule
   ],
 })
 export class AppModule {}

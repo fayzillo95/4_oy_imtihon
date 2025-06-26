@@ -1,63 +1,89 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { MovieCategory } from '../movie/entities/movies.entity';
 import { InjectModel } from '@nestjs/sequelize';
-import { MovieCategoryCreateDto } from '../movie/dto/movie.category.dto';
+import { MovieCategoryCreateDto } from './dto/movie.category.dto';
+import { MovieCategoryUpdateDto } from './dto/movie.category.update.dto';
 
 @Injectable()
-export class CategoryCounterService {
-    constructor(
-       @InjectModel(MovieCategory) private readonly categoriyModel : typeof MovieCategory 
-    ){}
-    async createCategory(data : MovieCategoryCreateDto){
-        if((await this.findByName(data.name))){
-            throw new ConflictException("Category name already exists")
-        }else{
-            const newCategory = await this.categoriyModel.create({...data})
-            return newCategory
-        }
-    }
+export class CategoryService {
+  constructor(
+    @InjectModel(MovieCategory)
+    private readonly categoriyModel: typeof MovieCategory,
+  ) {}
 
-    async findAllCategoriy() : Promise<MovieCategory[]>{
-        const allCategory = await this.categoriyModel.findAll()
-        return allCategory.map(category => category.toJSON())
-    }
+  async createCategory(data: MovieCategoryCreateDto) {
+      await this.checkExists(data)
+      const newCategory = await this.categoriyModel.create({ ...data });
+      return newCategory.toJSON();
+  }
 
-    async findByName(name : string) : Promise<MovieCategory | null>{
-        const exists = await this.categoriyModel.findOne({
-            where : {name}
-        })
-        return exists?.toJSON() ?? null
+  async findAllCategoriy(): Promise<MovieCategory[]> {
+    const allCategory = await this.categoriyModel.findAll();
+    return allCategory.map((category) => category.toJSON());
+  }
+
+  async findByName(name: string): Promise<MovieCategory | null> {
+    const exists = await this.categoriyModel.findOne({
+      where: { name },
+    });
+    return exists?.toJSON() ?? null;
+  }
+  
+  async findBySlug(slug: string): Promise<MovieCategory | null> {
+    const exists = await this.categoriyModel.findOne({
+      where: { slug },
+    });
+    return exists?.toJSON() ?? null;
+  }
+  
+  async findByCategoriyId(id: string): Promise<MovieCategory | null> {
+    const exists = await this.categoriyModel.findByPk(id);
+    return exists?.toJSON() ?? null;
+  }
+
+  async removeCategory(id: string) {
+    const oldCategoriy = await this.categoriyModel.findOne({where : {id}});
+    if (oldCategoriy) {
+      await oldCategoriy.destroy();
+      return {
+        message: 'Categoriy deleted !',
+      };
+    } else {
+      throw new NotFoundException('Categoriy not found !');
     }
+  }
+  async checkExists(data : {name? : string,slug? : string}){
+    if(data.name && (await this.findByName(data.name))){
+      throw new ConflictException('Category name already exists');
+    }
+    if(data.slug && (await this.findBySlug(data.slug))){
+      throw new ConflictException('Category slug already exists');
+    }
+  }
+
+  async updateCategoriy(id: string, data: MovieCategoryUpdateDto) {
+    if(Object.values(data).length === 0){
+      throw new BadRequestException("Invalid data empty body !")
+    }
+    const updatedCategoriy = await this.categoriyModel.findByPk(id);
+    await this.checkExists(data)
     
-    async findByCategoriyId(id:string) : Promise<MovieCategory | null>{
-        const exists = await this.categoriyModel.findByPk(id)
-        return exists?.toJSON() ?? null
+    if (updatedCategoriy) {
+      const oldCategoriy = await this.findByCategoriyId(id);
+      await updatedCategoriy.update({ ...data });
+      return {
+        oldCategoriy,
+        updatedCategoriy,
+        message: 'Categoriy updated !',
+      };
+    } else {
+      throw new NotFoundException('Categoriy not found !');
     }
+  }
 
-    async removeCategory(id : string) {
-        const oldCategoriy = await this.findByCategoriyId(id)
-        if(oldCategoriy){
-            await oldCategoriy.destroy()
-            return {
-                message : "Categoriy deleted !"
-            }
-        }else{
-            throw new NotFoundException("Categoriy not found !")
-        }
-    }
-    
-    async updateCategoriy(id : string, data : Partial<MovieCategory>){
-        const oldCategoriy = await this.findByCategoriyId(id)
-        const updatedCategoriy = await this.findByCategoriyId(id)
-        if(updatedCategoriy){
-            await updatedCategoriy.update({...data})
-            return {
-                oldCategoriy,
-                updatedCategoriy,
-                message : "Categoriy updated !"
-            }
-        }else{
-            throw new NotFoundException("Categoriy not found !")
-        }
-    }
 }
