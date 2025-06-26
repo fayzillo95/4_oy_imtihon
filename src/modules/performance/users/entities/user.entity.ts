@@ -1,6 +1,7 @@
-import { DataType } from "sequelize-typescript"
+import { DataType, Default, HasOne, PrimaryKey } from "sequelize-typescript"
 import { Column, Model, Table } from "sequelize-typescript";
 import {v4 as uuidv4} from "uuid"
+import { Profile } from "../../profile/entities/profile.entity";
 
 @Table({ 
     tableName : "users",
@@ -8,11 +9,10 @@ import {v4 as uuidv4} from "uuid"
     updatedAt : false
 })
 export class User extends Model {
+    @PrimaryKey
+    @Default(() => uuidv4())
     @Column({
-        type : DataType.STRING,
-        primaryKey : true,
-        unique : true,
-        defaultValue : () => uuidv4()
+        type : DataType.STRING
     })
     declare id? : string
     @Column({
@@ -40,4 +40,7 @@ export class User extends Model {
         defaultValue : "user"
     })
     declare role? : string
+
+    @HasOne(() => Profile)
+    profile :Profile
 }

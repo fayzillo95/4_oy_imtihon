@@ -3,33 +3,35 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { InjectModel } from '@nestjs/sequelize';
-import { JwtCounterService } from 'src/core/micro-service/jwt.counter/jwt.counter.service';
-import { MailerCounterService } from 'src/core/micro-service/mailer.counter/mailer.counter.service';
+import { JwtCounterService } from 'src/core/micro-service/jwt/jwt.counter.service';
+import { MailerCounterService } from 'src/core/micro-service/email/mailer.counter.service';
+import { ProfileService } from '../profile/profile.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User) private readonly userModel: typeof User,
     private readonly jwtService: JwtCounterService,
-    private readonly mailer: MailerCounterService
+    private readonly mailer: MailerCounterService,
+    private readonly profileService: ProfileService
   ) {
 
   }
 
   async create(createUserDto: CreateUserDto) {
-    const exists = [await this.findByEmail(createUserDto.email),await this.findByUsername(createUserDto.username)]
+    const exists = [await this.findByEmail(createUserDto.email), await this.findByUsername(createUserDto.username)]
     if (exists[0] || exists[1]) throw new ConflictException("User already exists !")
 
-    const newUser = await this.userModel.create({...createUserDto})
+    const newUser = await this.userModel.create({ ...createUserDto })
     return newUser.toJSON()
   }
-  async findByEmail(email: string) : Promise<User | null> {
+  async findByEmail(email: string): Promise<User | null> {
     const user = await this.userModel.findOne({ where: { email } })
     return user
   }
-  async findByUsername(username : string) :Promise<User | null>{
+  async findByUsername(username: string): Promise<User | null> {
     const exists = await this.userModel.findOne({
-      where : {username}
+      where: { username }
     })
     return exists
   }
@@ -37,9 +39,9 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  async findOne(id: number) : Promise<User | null>{
-    const exists =  await this.userModel.findOne({
-      where : {id}
+  async findOne(id: number): Promise<User | null> {
+    const exists = await this.userModel.findOne({
+      where: { id }
     })
     return exists;
   }

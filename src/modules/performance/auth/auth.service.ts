@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { JwtCounterService } from 'src/core/micro-service/jwt.counter/jwt.counter.service';
-import { MailerCounterService } from 'src/core/micro-service/mailer.counter/mailer.counter.service';
+import { JwtCounterService } from 'src/core/micro-service/jwt/jwt.counter.service';
+import { MailerCounterService } from 'src/core/micro-service/email/mailer.counter.service';
 import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { LoginAuthDto } from './dto/login.auth.dto';
-import { RedisCounterService } from 'src/core/macro-service/redis.counter/redis.counter.service';
+import { RedisCounterService } from 'src/core/macro-service/cache/redis.counter.service';
 
 @Injectable()
 export class AuthService {

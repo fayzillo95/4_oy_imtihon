@@ -3,6 +3,8 @@ import { CoreInitModule } from './core/core.init.module';
 import { UsersModule } from './modules/performance/users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/performance/auth/auth.module';
+import { ProfileModule } from './modules/performance/profile/profile.module';
+import { MoviesCounterModule } from './modules/file.menegment/movie/movies.counter.module';
 
 @Module({
   imports: [
@@ -11,7 +13,7 @@ import { AuthModule } from './modules/performance/auth/auth.module';
       envFilePath : [".env"]
     }),
     CoreInitModule, 
-    UsersModule, AuthModule
+    UsersModule, AuthModule, ProfileModule, MoviesCounterModule,
   ],
 })
 export class AppModule {}

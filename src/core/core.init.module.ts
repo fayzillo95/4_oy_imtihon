@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { DatabaseCounterModule } from './macro-service/databse.counter/databse.counter.module';
-import { RedisCounterModule } from './macro-service/redis.counter/redis.counter.module';
-import { MailerCounterModule } from './micro-service/mailer.counter/mailer.counter.module';
-import { JwtCouterModule } from './micro-service/jwt.counter/jwt.couter.module';
+import { DatabaseCounterModule } from './macro-service/database/databse.counter.module';
+import { RedisCounterModule } from './macro-service/cache/redis.counter.module';
+import { MailerCounterModule } from './micro-service/email/mailer.counter.module';
+import { JwtCouterModule } from './micro-service/jwt/jwt.couter.module';
 
 @Module({
 

@@ -3,16 +3,18 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './entities/user.entity';
-import { JwtCounterService } from 'src/core/micro-service/jwt.counter/jwt.counter.service';
-import { JwtCouterModule } from 'src/core/micro-service/jwt.counter/jwt.couter.module';
+import { JwtCounterService } from 'src/core/micro-service/jwt/jwt.counter.service';
+import { JwtCouterModule } from 'src/core/micro-service/jwt/jwt.couter.module';
 import { JwtService } from '@nestjs/jwt';
-import { MailerCounterModule } from 'src/core/micro-service/mailer.counter/mailer.counter.module';
+import { MailerCounterModule } from 'src/core/micro-service/email/mailer.counter.module';
+import { ProfileModule } from '../profile/profile.module';
 
 @Module({
   imports : [
     SequelizeModule.forFeature([User]),
     JwtCouterModule,
-    MailerCounterModule
+    MailerCounterModule,
+    ProfileModule
   ],
   controllers: [UsersController],
   providers: [UsersService],
