@@ -34,4 +34,8 @@ export class RedisConnectService implements OnModuleInit, OnModuleDestroy {
     console.log(value)
     return value ? JSON.parse(value) : null;
   }
+  async removeItem(key : string){
+    const removests = await this.redisClient.del(key)
+    return removests
+  }
 }

@@ -17,7 +17,7 @@ export class AuthService {
     private readonly config: ConfigService
   ) { }
 
-  async otpRegister(userdto: CreateUserDto) {
+  async sendVerifyUrl(userdto: CreateUserDto) {
     await this.userService.checkExists(userdto)
     const verifyUrl = await this.getVerifyUrl("12345",userdto.email)
     const emailstatus = await this.mailerService.sendRegisterVerify(
@@ -38,6 +38,8 @@ export class AuthService {
         throw new BadRequestException("Invalid email or expires url !")
       }
       const newUser = await this.userService.create(userdata,true)
+      const removeKeysts = await this.redisService.removeItem(email)
+      console.log(removeKeysts)
       return {
         accessToken: await this.jwtService.getAccessToken({ id: newUser.id, role: newUser.role }),
         refreshToken: await this.jwtService.getRefreshToken({ id: newUser.id, role: newUser.role }),

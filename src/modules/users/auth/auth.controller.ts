@@ -9,7 +9,7 @@ export class AuthController {
 
   @Post('register')
   register(@Body() data: CreateUserDto) {
-    return this.authService.otpRegister(data);
+    return this.authService.sendVerifyUrl(data);
   }
   @Get("verify/:token")
   verify(@Param("token") token : string){
