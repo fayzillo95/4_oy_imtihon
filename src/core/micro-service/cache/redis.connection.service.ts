@@ -25,10 +25,13 @@ export class RedisConnectService implements OnModuleInit, OnModuleDestroy {
     }
   }
   async setItem(key: string, value: object) {
-    return this.redisClient.set(key, JSON.stringify(value), { EX: 600 });
+    const status = await this.redisClient.set(key, JSON.stringify(value), { EX: 60000 });
+    console.log(status)
+    return status
   }
   async getValue<T>(key: string): Promise<T | null> {
     const value = await this.redisClient.get(key);
+    console.log(value)
     return value ? JSON.parse(value) : null;
   }
 }

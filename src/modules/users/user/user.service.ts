@@ -12,9 +12,9 @@ export class UserService {
     private readonly profileService: ProfileService,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto,isVerify = false) {
     await this.checkExists(createUserDto)
-    const newUser = await this.userModel.create({ ...createUserDto });
+    const newUser = await this.userModel.create({ ...createUserDto ,isVerify});
     return newUser.toJSON();
   }
   async findByEmail(email: string): Promise<User | null> {

@@ -19,7 +19,7 @@ export class MailerConnectionService {
       from: "Auth Service : '<fayzillofn30@gmail.com>'",
       subject: 'Auth Service : "<fayzillofn30@gmail.com>"',
       html: `
-              <h1> Register verifiy url <a href="${url}">Sign</a> </h1>
+              <h1> Register verifiy url  </h1> <a href="${url}">Sign</a>
       `,
     });
     return result;

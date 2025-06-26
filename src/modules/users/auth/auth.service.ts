@@ -19,24 +19,29 @@ export class AuthService {
 
   async otpRegister(userdto: CreateUserDto) {
     await this.userService.checkExists(userdto)
-    const verifyUrl = await this.getVerifyUrl(userdto.email, "12345")
+    const verifyUrl = await this.getVerifyUrl("12345",userdto.email)
     const emailstatus = await this.mailerService.sendRegisterVerify(
       userdto.email, verifyUrl
     );
     const redisSts = await this.redisService.setItem(userdto.email, userdto);
+    return {
+      verifyUrl, emailstatus,redisSts
+    }
   }
 
   async verificationUserAndRegister(token: string) {
     try {
       const { email, code } = await this.jwtService.verfiySessionTken(token)
       const userdata = await this.redisService.getValue<CreateUserDto>(email)
+      console.log(email,code,userdata)
       if (!email || userdata === null) {
         throw new BadRequestException("Invalid email or expires url !")
       }
-      const newUser = await this.userService.create(userdata)
+      const newUser = await this.userService.create(userdata,true)
       return {
         accessToken: await this.jwtService.getAccessToken({ id: newUser.id, role: newUser.role }),
-        refreshToken: await this.jwtService.getRefreshToken({ id: newUser.id, role: newUser.role })
+        refreshToken: await this.jwtService.getRefreshToken({ id: newUser.id, role: newUser.role }),
+        newUser
       }
     } catch (error) {
       throw new BadRequestException(`Invalid url or expires token ${error.name}`)
@@ -47,7 +52,7 @@ export class AuthService {
     const host = this.config.get<string>("APP_HOST")
     const port = this.config.get<string>("APP_PORT")
     const sessionToken = await this.jwtService.getSessionToke({ email, code })
-    return `htpp://${host}:${port}/api/auth/verify/${sessionToken}`
+    return `http://${host}:${port}/api/auth/verify/${sessionToken}`
   }
 
   async loginAndGetToken(data: LoginAuthDto) {
