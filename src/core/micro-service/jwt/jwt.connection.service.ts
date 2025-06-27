@@ -15,12 +15,14 @@ export class JwtConnectionService {
       expiresIn: this.config.get<string>('JWT_ACCESS_EXPIN'),
     });
   }
+  
   async getRefreshToken(payload: { id: string; role: string }) {
     return this.jwtService.sign(payload, {
       secret: this.config.get<string>('JWT_REFRESH_KEY'),
       expiresIn: this.config.get<string>('JWT_REFRESH_EXPIN'),
     });
   }
+
   async getSessionToke(payload: {
         email: string,
         code: string,
@@ -31,15 +33,18 @@ export class JwtConnectionService {
       expiresIn : "610s"
     })
   }
+
   async verfiySessionTken(token : string){
     return this.jwtService.verifyAsync(token, {
       secret: this.config.getOrThrow<string>("JWT_SESSION_KEY"),
     })
   }
+
   async verifyAccessToken(token : string){
     console.log(token)
     return this.jwtService.verifyAsync(token,{
       secret : this.config.get<string>("JWT_ACCESS_KEY")
     })
   }
+
 }
