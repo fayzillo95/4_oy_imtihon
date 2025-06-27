@@ -9,8 +9,8 @@ import { ConfigService } from '@nestjs/config';
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly config : ConfigService
-  ) {}
+    private readonly config: ConfigService
+  ) { }
 
   @Post('register')
   register(@Body() data: CreateUserDto) {
@@ -18,19 +18,37 @@ export class AuthController {
   }
   @Get("verify/:token")
   async verify(
-    @Param("token") token : string,
-    @Res() res : Response
-  ){
+    @Param("token") token: string,
+    @Res() res: Response
+  ) {
     const result = await this.authService.verificationUserAndRegister(token)
-    res.cookie("accessToken",  result.accessToken)
-    res.cookie("refreshToken", result.refreshToken)
+    res.cookie("accessToken", result.accessToken, {
+      maxAge: 24 * ((60 * 1000) * 60),
+      httpOnly: true
+    })
+    res.cookie("refreshToken", result.refreshToken, {
+      maxAge: 168 * ((60 * 1000) * 60),
+      httpOnly: true
+    })
     const host = this.config.get<string>("APP_HOST")
     const port = this.config.get<string>("APP_PORT")
     res.redirect(`http://${host}:${port}/api/profile/may-accaunt`)
-    return 
+    return result.accessToken
   }
   @Post('login')
-  login(@Body() data: LoginAuthDto) {
-    return this.authService.loginAndGetToken(data);
+  async login(@Body() data: LoginAuthDto, @Res() res: Response) {
+    const { accessToken, refreshToken } = await this.authService.loginAndGetToken(data);
+    res.cookie("accessToken", accessToken, {
+      maxAge: 24 * ((60 * 1000) * 60),
+      httpOnly: true
+    })
+    res.cookie("refreshToken", refreshToken, {
+      maxAge: 168 * ((60 * 1000) * 60),
+      httpOnly: true
+    })
+    const host = this.config.get<string>("APP_HOST")
+    const port = this.config.get<string>("APP_PORT")
+    res.redirect(`http://${host}:${port}/api/profile/may-accaunt`)
+    return accessToken
   }
 }

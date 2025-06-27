@@ -35,7 +35,7 @@ export class UserService {
     if (exists[0])
       throw new ConflictException('User eamil already exists !');
     if(exists[1])
-      throw new ConflictException("User email already exists !")
+      throw new ConflictException("Username already exists !")
   }
 
   findAll() {

@@ -4,11 +4,11 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { MovieCategory } from '../movie/entities/movies.entity';
+import { MovieCategory } from '../movie/entities/category.entity';
 import { InjectModel } from '@nestjs/sequelize';
 import { MovieCategoryCreateDto } from './dto/movie.category.dto';
 import { MovieCategoryUpdateDto } from './dto/movie.category.update.dto';
-
+import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class CategoryService {
   constructor(
@@ -18,7 +18,8 @@ export class CategoryService {
 
   async createCategory(data: MovieCategoryCreateDto) {
       await this.checkExists(data)
-      const newCategory = await this.categoriyModel.create({ ...data });
+      const slug = "#-" + uuidv4() + "-" + data.name.toLocaleLowerCase().replaceAll(" ","-")
+      const newCategory = await this.categoriyModel.create({ ...data,slug });
       return newCategory.toJSON();
   }
 
@@ -70,8 +71,8 @@ export class CategoryService {
     if(Object.values(data).length === 0){
       throw new BadRequestException("Invalid data empty body !")
     }
+    await this.checkExists(data) 
     const updatedCategoriy = await this.categoriyModel.findByPk(id);
-    await this.checkExists(data)
     
     if (updatedCategoriy) {
       const oldCategoriy = await this.findByCategoriyId(id);

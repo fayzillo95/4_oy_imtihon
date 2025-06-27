@@ -7,9 +7,5 @@ export class MovieCategoryCreateDto {
 
   @IsString()
   @IsNotEmpty()
-  slug: string;
-
-  @IsString()
-  @IsNotEmpty()
   description: string;
 }

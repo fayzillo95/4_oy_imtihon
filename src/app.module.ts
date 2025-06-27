@@ -6,6 +6,8 @@ import { AuthModule } from './modules/users/auth/auth.module';
 import { ProfileModule } from './modules/users/profile/profile.module';
 import { MoviesCounterModule } from './modules/file.menegment/movie/movies.module';
 import { CategoryModule } from './modules/file.menegment/categories/category.module';
+import { AdminModule } from './modules/users/admin/admin.module';
+import { SubscriptionPlansModule } from './modules/finance-menegment/subscription.types.module';
 
 @Module({
   imports: [
@@ -14,9 +16,11 @@ import { CategoryModule } from './modules/file.menegment/categories/category.mod
       envFilePath: ['.env'],
     }),
     CoreInitModule,
-    UserModule,
-    AuthModule,
+    SubscriptionPlansModule,
+    // UserModule,
+    // AuthModule,
     // ProfileModule,
+    // AdminModule,
     // MoviesCounterModule,
     // CategoryModule
   ],
