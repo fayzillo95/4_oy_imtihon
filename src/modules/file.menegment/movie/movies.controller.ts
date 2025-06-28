@@ -9,6 +9,8 @@ import {
   UseInterceptors,
   UploadedFile,
   Put,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { CreateFileDto, CreateMovieDto } from './dto/create-movies.dto';
@@ -18,12 +20,26 @@ import { v4 as uuidv4 } from 'uuid';
 import { extname } from 'path';
 import { UpdateMoviesDto } from './dto/update-movies.dto';
 import { storageFile, storagePoster } from './storage/storage.interseptor';
+import { JwtAuthGuard } from 'src/core/guards/jwtInCookieAuth.guard';
+import { Request } from 'express';
 
 @Controller('admin')
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
-  @Post('add-movie')
+  @Get("getall")
+  getAll(){
+    return this.moviesService.findAll()
+  }
+
+  @Get("/movie-detailes/:id")
+  @UseGuards(JwtAuthGuard)
+  getMovieDetaiels(@Param("id") id : string,@Req() req : Request){
+    const user_id = req['user'].id
+    return this.moviesService.findOneMovieDetailes(id,user_id)
+  }
+
+  @Post('add-movie/detailes')
   @UseInterceptors(FileInterceptor('poster', {storage : storagePoster}))
   createMovie(
     @Body() createMovieDto: CreateMovieDto,
@@ -40,11 +56,6 @@ export class MoviesController {
     @Param("id") id : string
   ){
     return this.moviesService.writeMovie(data,file,id)
-  }
-
-  @Get("getall")
-  getAll(){
-    return this.moviesService.findAll()
   }
 
   @Put("movies/:id/files")

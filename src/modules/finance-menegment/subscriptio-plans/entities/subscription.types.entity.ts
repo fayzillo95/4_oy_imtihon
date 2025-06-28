@@ -1,6 +1,7 @@
-import { Column, Default, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { Column, Default, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
 import { DataType } from "sequelize-typescript";
 import { v4 as uuidv4 } from "uuid";
+import { UserSubscription } from "../../user_subscriptions/entities/user_subscription.entity";
 
 @Table({
     tableName : "subscription_plans"
@@ -38,4 +39,7 @@ export class SubscriptionPlans extends Model {
         type : DataType.BOOLEAN
     })
     declare isActive : boolean
+
+    @HasMany(() => UserSubscription)
+    subscriptions : UserSubscription[]
 }

@@ -14,8 +14,8 @@ export class AdminController {
   ) {}
 
   @Post("create-role")
-  createRole(@Body() RoleDto: RoleDto) {
-    return this.roleService.createrole(RoleDto);
+  updateRole(@Body() RoleDto: RoleDto) {
+    return this.roleService.updateRole(RoleDto);
   }
 
   @Post("create-permission")
@@ -30,7 +30,6 @@ export class AdminController {
 
   @Get('permission/:id')
   findPermissionByUserId(@Param('id') id: string) {
-    
     return this.permissionService.findPermissionByUserId(id);
   }
 
@@ -39,7 +38,7 @@ export class AdminController {
     return this.permissionService.updatePermissionByUserId(id, models, data);
   }
 
-  @Delete(':id')
+  @Delete('remove-permission/by-user-id/:id')
   deletePermissionByUserId(@Param('id') id: string) {
     return this.permissionService.deletePermissionByUserId(id);
   }

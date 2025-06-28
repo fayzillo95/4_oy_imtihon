@@ -1,5 +1,6 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript"
-import { Json } from "sequelize/types/utils"
+import { BelongsTo, Column, DataType, Default, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript"
+import { UserSubscription } from "../../user_subscriptions/entities/user_subscription.entity"
+import { v4 as uuidv4 } from 'uuid';
 
 @Table({
     tableName : "payments",
@@ -7,17 +8,22 @@ import { Json } from "sequelize/types/utils"
     updatedAt : true
 })
 export class Payment extends Model{
-    
+    @PrimaryKey
+    @Default(() => uuidv4())
     @Column({
         type : DataType.STRING
     })
     declare id : string
     
+    @ForeignKey(() => UserSubscription)
     @Column({
         type : DataType.STRING
     })
     declare user_subscription_id : string
     
+    @BelongsTo(() => UserSubscription)
+    user_subscription : UserSubscription
+
     @Column({
         type : DataType.STRING
     })
@@ -26,15 +32,15 @@ export class Payment extends Model{
     @Column({
         type : DataType.JSON
     })
-    declare payment_method : Json
+    declare payment_method : string[]
     
     @Column({
         type : DataType.JSON
     })
-    declare payment_details : Json
+    declare payment_details : string[]
     
     @Column({
-        type : DataType.ARRAY
+        type : DataType.JSON
     })
     declare status : string[]
     
@@ -43,13 +49,3 @@ export class Payment extends Model{
     })
     declare external_transaction_id : string
 }
-`
-id: UUID PRIMARY KEY
-user_subscription_id: UUID FOREIGN KEY REFERENCES user_subscriptions(id)
-amount: DECIMAL(10, 2)
-payment_method: ENUM('card', 'paypal', 'bank_transfer', 'crypto')
-payment_details: JSON
-status: ENUM('pending', 'completed', 'failed', 'refunded')
-external_transaction_id: VARCHAR(100)
-created_at: TIMESTAMP DEFAULT NOW()
-`

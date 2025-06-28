@@ -13,6 +13,8 @@ import { SubscriptionPlans } from 'src/modules/finance-menegment/subscriptio-pla
 import { Reviews } from 'src/modules/users/user-reviews/entities/user-review.entity';
 import { WatchHistory } from 'src/modules/users/watch-history/entities/watch-history.entity';
 import { Permission } from 'src/modules/security/admin/entities/permission.entity';
+import { UserSubscription } from 'src/modules/finance-menegment/user_subscriptions/entities/user_subscription.entity';
+import { Payment } from 'src/modules/finance-menegment/payments/entities/payment.entity';
 
 @Global()
 @Module({
@@ -36,7 +38,10 @@ import { Permission } from 'src/modules/security/admin/entities/permission.entit
             SubscriptionPlans,
             Reviews,
             WatchHistory,
-            Permission
+            Permission,
+            UserSubscription,
+            Payment,
+            
         ],
         logQueryParameters : false,
         logging : false

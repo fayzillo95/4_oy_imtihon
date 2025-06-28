@@ -10,16 +10,18 @@ import { MovieCategories } from './entities/movie.categories';
 import { v4 as uuidv4 } from 'uuid';
 import { existsSync, readFileSync, rmdirSync, rmSync } from "fs"
 import { join } from 'path';
+import { WatchHistory } from 'src/modules/users/watch-history/entities/watch-history.entity';
 
 @Injectable()
 export class MoviesService {
   constructor(
     @InjectModel(Movies) private readonly movieModel: typeof Movies,
+    @InjectModel(MovieFile) private readonly fileModel: typeof MovieFile,
     @InjectModel(MovieCategory)
     private readonly categoriyModel: typeof MovieCategory,
-    @InjectModel(MovieFile) private readonly fileModel: typeof MovieFile,
+    @InjectModel(MovieCategories) private readonly m_categoriesModel: typeof MovieCategories,
+    @InjectModel(WatchHistory) private readonly watchHistoryModel : typeof WatchHistory,
     private readonly config: ConfigService,
-    @InjectModel(MovieCategories) private readonly m_categoriesModel: typeof MovieCategories
   ) { }
   /**
    * 
@@ -92,11 +94,33 @@ export class MoviesService {
     const movies = await this.movieModel.findAll()
     return movies
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} moviesCounter`;
+  /**
+   * 
+   * @param id : string type uuidv4
+   * @param user_id : string type uuidv4
+   */
+  async findOneMovieDetailes(id : string, user_id : string){
+    const movieDetailes = await this.movieModel.findByPk(id)
+    if(!movieDetailes) throw new NotFoundException("Sorry movie detailes not found !")
+    const newWatchHitory = await this.watchHistoryModel.create({
+      user_id,
+      movie_id : movieDetailes.id,
+      watched_duration : 0,
+      watched_percentage : 0.0,
+    })
+    return {
+      movie_detailes : movieDetailes.toJSON(),
+      newWatchHitory
+    }
   }
 
+  /**
+   * 
+   * @param id 
+   * @param data 
+   * @param poster 
+   * @returns 
+   */
   async update(id: string, data: UpdateMoviesDto, poster: Express.Multer.File | null = null) {
 
     const exists = await this.movieModel.findByPk(id)
@@ -149,7 +173,11 @@ export class MoviesService {
     }
     return { result, categories };
   }
-
+  /**
+   * 
+   * @param id 
+   * @returns 
+   */
   async remove(id: string) {
     const exists = await this.movieModel.findByPk(id)
     if (!exists) throw new NotFoundException("Movie not found ! ")
@@ -167,13 +195,22 @@ export class MoviesService {
     const d_sts = await exists.destroy()
     return `This action removes a #${id} ${d_sts} moviesCounter`;
   }
-
+  /**
+   * 
+   * @param name 
+   * @param filepath 
+   * @returns 
+   */
   getUrl(name: string, filepath: string) {
     const host = this.config.get<string>("APP_HOST")
     const port = this.config.get<string>("APP_PORT")
     return `http://${host}:${port}/${filepath}/${name}`
   }
-
+  /**
+   * 
+   * @param id 
+   * @returns 
+   */
   async removeJunctionCt(id: string) {
     const result = await this.m_categoriesModel.findAll({
       where: {
@@ -187,7 +224,11 @@ export class MoviesService {
     }
     return result
   }
-
+  /**
+   * 
+   * @param category_ids 
+   * @returns 
+   */
   async checkCategoryExists(category_ids: string[]) {
     return Promise.all(
       category_ids.map((id) => {
@@ -203,6 +244,10 @@ export class MoviesService {
       }),
     );
   }
+  /**
+   * 
+   * @returns 
+   */
   async getAllMCt() {
     const mct = await this.m_categoriesModel.findAll(
       {include : [{model : Movies},{model : MovieCategory}]}

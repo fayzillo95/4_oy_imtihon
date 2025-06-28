@@ -6,6 +6,7 @@ import { Favorite } from '../../user-favorite/entities/favorite.entity';
 import { WatchHistory } from '../../watch-history/entities/watch-history.entity';
 import { Reviews } from '../../user-reviews/entities/user-review.entity';
 import { Permission } from 'src/modules/security/admin/entities/permission.entity';
+import { UserSubscription } from 'src/modules/finance-menegment/user_subscriptions/entities/user_subscription.entity';
 
 @Table({
   tableName: 'users',
@@ -69,4 +70,7 @@ export class User extends Model {
 
   @HasMany(() => Permission)
   permissions : Permission[]
+
+  @HasMany(() => UserSubscription)
+  subscriptions : UserSubscription[]
 }

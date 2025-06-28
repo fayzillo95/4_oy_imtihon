@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from 'src/core/types/jwt.types';
 
 @Injectable()
 export class JwtConnectionService {
@@ -9,14 +10,14 @@ export class JwtConnectionService {
     private config: ConfigService,
   ) { }
 
-  async getAccessToken(payload: { id: string; role: string }) {
+  async getAccessToken(payload: JwtPayload) {
     return this.jwtService.sign(payload, {
       secret : this.config.get<string>("JWT_ACCESS_KEY"),
       expiresIn: this.config.get<string>('JWT_ACCESS_EXPIN'),
     });
   }
   
-  async getRefreshToken(payload: { id: string; role: string }) {
+  async getRefreshToken(payload: JwtPayload) {
     return this.jwtService.sign(payload, {
       secret: this.config.get<string>('JWT_REFRESH_KEY'),
       expiresIn: this.config.get<string>('JWT_REFRESH_EXPIN'),
@@ -40,11 +41,12 @@ export class JwtConnectionService {
     })
   }
 
-  async verifyAccessToken(token : string){
+  async verifyAccessToken(token : string) : Promise<JwtPayload>{
     console.log(token)
-    return this.jwtService.verifyAsync(token,{
+    const result = await this.jwtService.verifyAsync(token,{
       secret : this.config.get<string>("JWT_ACCESS_KEY")
     })
+    return {id : result.id, role : result.role}
   }
 
 }

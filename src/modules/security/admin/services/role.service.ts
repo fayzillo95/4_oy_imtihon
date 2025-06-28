@@ -9,11 +9,12 @@ export class RoleService{
         @InjectModel(User) private readonly userModel : typeof User,
     ){}
 
-  async createrole(roleDto: RoleDto) {
+  async updateRole(roleDto: RoleDto) {
     const exists = await this.userModel.findByPk(roleDto.user_id)
     if (!exists) throw new NotFoundException("User not found !")
     exists.role = roleDto.role
     await exists.save()
     return exists;
   }
+  
 }
