@@ -6,15 +6,30 @@ export class RedisConnectService implements OnModuleInit, OnModuleDestroy {
   private redisClient: RedisClientType;
 
   async onModuleInit() {
-    this.redisClient = createClient({
-      url: process.env.REDIS_URL || 'redis://127.0.0.1:6379',
-    });
+    const isProd = !!process.env.REDIS_URL;
+
+    this.redisClient = createClient(
+      isProd
+        ? {
+            url: process.env.REDIS_URL,
+            socket: {
+              tls: true,
+              host: 'assuring-jaybird-40190.upstash.io', // 👈 qo‘shildi
+              rejectUnauthorized: false,
+            },
+          }
+        : {
+            url: 'redis://127.0.0.1:6379',
+          }
+    );
 
     await this.redisClient.on('error', (err) =>
       console.error('Redis error:', err),
     );
 
     await this.redisClient.connect();
+    const cluster = await this.redisClient.CLUSTER_LINKS()
+    console.log(cluster)
     console.log('Redis connected');
   }
 
@@ -34,7 +49,7 @@ export class RedisConnectService implements OnModuleInit, OnModuleDestroy {
     console.log(value)
     return value ? JSON.parse(value) : null;
   }
-  async removeItem(key : string){
+  async removeItem(key: string) {
     const removests = await this.redisClient.del(key)
     return removests
   }
