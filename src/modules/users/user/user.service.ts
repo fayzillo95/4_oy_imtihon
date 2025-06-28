@@ -45,7 +45,10 @@ export class UserService {
     const users = await this.userModel.findAll()
     return users.map(user => user.toJSON());
   }
-
+  async findById(id : string){
+    const user = await this.userModel.findByPk(id)
+    return user
+  }
   async findOne(id: number): Promise<User | null> {
     const exists = await this.userModel.findOne({
       where: { id },

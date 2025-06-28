@@ -25,7 +25,7 @@ export class Permission extends Model{
     user : User
     
     @Column({
-        type : DataType.STRING
+        type : DataType.ARRAY(DataType.ENUM(...Object.values(Actions)))
     })
     declare actions : Actions[]
     

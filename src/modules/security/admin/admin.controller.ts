@@ -1,35 +1,46 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { AdminService } from './admin.service';
+import { PermissionService } from './services/permission.service';
 import { RoleDto } from './dto/create-admin.dto';
-import { UpdateAdminDto } from './dto/update-admin.dto';
+import { UpdatePermission } from './dto/update-admin.dto';
+import { Actions, Models } from 'src/core/types/users.types';
+import { RoleService } from './services/role.service';
+import { CreatePermissionDto } from './dto/create.permission.dto';
 
 @Controller('admin')
 export class AdminController {
-  constructor(private readonly adminService: AdminService) {}
+  constructor(
+    private readonly permissionService: PermissionService,
+    private readonly roleService : RoleService
+  ) {}
 
-  @Post()
-  create(@Body() RoleDto: RoleDto) {
-
-    return this.adminService.create(RoleDto);
+  @Post("create-role")
+  createRole(@Body() RoleDto: RoleDto) {
+    return this.roleService.createrole(RoleDto);
   }
 
-  @Get()
-  findAll() {
-    return this.adminService.findAll();
+  @Post("create-permission")
+  createPermission(@Body() data : CreatePermissionDto){
+    return this.permissionService.createPermission(data)
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.adminService.findOne(+id);
+  @Get("permissions/getall")
+  findAllPermissions() {
+    return this.permissionService.findAllPermissions();
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
-    return this.adminService.update(+id, updateAdminDto);
+  @Get('permission/:id')
+  findPermissionByUserId(@Param('id') id: string) {
+    
+    return this.permissionService.findPermissionByUserId(id);
+  }
+
+  @Patch('update-permission/by-userid/:model/:id')
+  update(@Param('id') id: string,@Param("model") models : Models[], @Body() data : Actions[]) {
+    return this.permissionService.updatePermissionByUserId(id, models, data);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.adminService.remove(+id);
+  deletePermissionByUserId(@Param('id') id: string) {
+    return this.permissionService.deletePermissionByUserId(id);
   }
 }

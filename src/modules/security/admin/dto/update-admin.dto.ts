@@ -1,4 +1,17 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateAdminDto } from './create-admin.dto';
+import { IsEnum, IsUUID } from 'class-validator';
+import { Actions, Models } from 'src/core/types/users.types';
 
-export class UpdateAdminDto extends PartialType(CreateAdminDto) {}
+export class UpdatePermission {
+    @IsUUID()
+    user_id :string
+
+    @IsUUID()
+    id : string
+
+    @IsEnum(Actions)
+    actions? : Actions[]
+
+    @IsEnum(Models)
+    model? : Models
+}
