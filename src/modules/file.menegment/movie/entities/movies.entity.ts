@@ -5,9 +5,16 @@ import {
   DataType,
   PrimaryKey,
   Default,
+  HasMany,
+  HasOne,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import {  Subscription_type } from 'src/core/types/movies.types';
+import { MovieCategories } from './movie.categories';
+import { MovieFile } from './movie_file.entity';
+import { Favorite } from 'src/modules/users/user-favorite/entities/favorite.entity';
+import { WatchHistory } from 'src/modules/users/watch-history/entities/watch-history.entity';
+import { Reviews } from 'src/modules/users/user-reviews/entities/user-review.entity';
 
 @Table({
   tableName: 'movies',
@@ -53,4 +60,19 @@ export class Movies extends Model {
     defaultValue: Subscription_type.free,
   })
   declare subscription_type: Subscription_type;
+
+  @HasMany(() => MovieCategories)
+  categories : MovieCategories[]
+
+  @HasOne(() => MovieFile)
+  movie_file : MovieFile
+
+  @HasMany(() => Favorite)
+  favorite : Favorite[]
+
+  @HasMany(() => WatchHistory)
+  watch_hitory : WatchHistory[]
+
+  @HasMany(() => Reviews)
+  reviews  : Reviews
 }

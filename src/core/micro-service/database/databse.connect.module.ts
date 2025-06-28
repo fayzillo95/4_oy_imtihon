@@ -8,6 +8,11 @@ import { MovieFile } from 'src/modules/file.menegment/movie/entities/movie_file.
 
 import { Profile } from 'src/modules/users/profile/entities/profile.entity';
 import { User } from 'src/modules/users/user/entities/user.entity';
+import { Favorite } from 'src/modules/users/user-favorite/entities/favorite.entity';
+import { SubscriptionPlans } from 'src/modules/finance-menegment/subscriptio-plans/entities/subscription.types.entity';
+import { Reviews } from 'src/modules/users/user-reviews/entities/user-review.entity';
+import { WatchHistory } from 'src/modules/users/watch-history/entities/watch-history.entity';
+import { Permission } from 'src/modules/security/admin/entities/permission.entity';
 
 @Global()
 @Module({
@@ -27,7 +32,14 @@ import { User } from 'src/modules/users/user/entities/user.entity';
             MovieFile,
             MovieCategory, 
             MovieCategories,
+            Favorite,
+            SubscriptionPlans,
+            Reviews,
+            WatchHistory,
+            Permission
         ],
+        logQueryParameters : false,
+        logging : false
       }),
     }),
   ],

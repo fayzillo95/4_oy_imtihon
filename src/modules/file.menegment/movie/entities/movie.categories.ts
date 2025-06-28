@@ -5,30 +5,33 @@ import {
   DataType,
   PrimaryKey,
   Default,
+  BelongsTo,
+  ForeignKey,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
-import {  Subscription_type } from 'src/core/types/movies.types';
+import { MovieCategory } from './category.entity';
+import { Movies } from './movies.entity';
 
-
-@Table({
-  tableName : "movie_categories"
-})
-export class MovieCategories extends Model{
+@Table({ tableName: 'movie_categories' })
+export class MovieCategories extends Model {
   @PrimaryKey
   @Default(() => uuidv4())
-  @Column({
-    type : DataType.STRING
-  })
-  declare id : string
-  
-  @Column({
-    type : DataType.STRING
-  })
-  declare movie_id : string
-  
-  @Column({
-    type : DataType.STRING
-  })
-  declare category_id : string
+  @Column(DataType.STRING)
+  declare id: string;
+
+  @ForeignKey(() => Movies)
+  @Column({ type: DataType.STRING, field: 'movie_id' }) // <-- BU MUHIM!
+  declare movie_id: string;
+
+  @ForeignKey(() => MovieCategory)
+  @Column({ type: DataType.STRING, field: 'category_id' }) // <-- BU MUHIM!
+  declare category_id: string;
+
+  @BelongsTo(() => Movies)
+  movie: Movies;
+
+  @BelongsTo(() => MovieCategory)
+  category: MovieCategory;
 }
+
 

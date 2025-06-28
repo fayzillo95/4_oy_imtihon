@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
-import { initReleations } from './modules/file.menegment/movie/entities/releation.entities';
+// import { initReleations } from './modules/file.menegment/movie/entities/releation.entities';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,7 +14,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  await initReleations(),
+  // await initReleations(),
   app.setGlobalPrefix('api');
   await app.listen(process.env.APP_PORT ?? 12312);
   

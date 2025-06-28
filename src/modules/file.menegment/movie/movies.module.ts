@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { MoviesCounterService } from './movies.service';
-import { MoviesCounterController } from './movies.controller';
+import { MoviesService } from './movies.service';
+import { MoviesController } from './movies.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import {  Movies } from './entities/movies.entity';
 import { MovieCategory } from './entities/category.entity';
@@ -9,7 +9,7 @@ import { MovieCategories } from './entities/movie.categories';
 
 @Module({
   imports: [SequelizeModule.forFeature([Movies, MovieCategory,MovieFile,MovieCategories])],
-  controllers: [MoviesCounterController],
-  providers: [MoviesCounterService],
+  controllers: [MoviesController],
+  providers: [MoviesService],
 })
 export class MoviesCounterModule {}

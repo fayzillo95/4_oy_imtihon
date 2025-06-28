@@ -8,60 +8,76 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  Put,
 } from '@nestjs/common';
-import { MoviesCounterService } from './movies.service';
+import { MoviesService } from './movies.service';
 import { CreateFileDto, CreateMovieDto } from './dto/create-movies.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import { extname } from 'path';
+import { UpdateMoviesDto } from './dto/update-movies.dto';
+import { storageFile, storagePoster } from './storage/storage.interseptor';
 
 @Controller('admin')
-export class MoviesCounterController {
-  constructor(private readonly moviesCounterService: MoviesCounterService) {}
+export class MoviesController {
+  constructor(private readonly moviesService: MoviesService) {}
 
   @Post('add-movie')
-  @UseInterceptors(
-    FileInterceptor('poster', {
-      storage: diskStorage({
-        destination: './uploads/posters',
-        filename: (req, file, cb) => {
-          const fileName = uuidv4() + extname(file.originalname);
-          cb(null, fileName);
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(FileInterceptor('poster', {storage : storagePoster}))
   createMovie(
     @Body() createMovieDto: CreateMovieDto,
     @UploadedFile() poster : Express.Multer.File
   ) {
-    console.log(poster);
-    return this.moviesCounterService.create(createMovieDto,poster);
+    return this.moviesService.create(createMovieDto,poster);
   }
 
   @Post("movies/:id/files")
-  @UseInterceptors(FileInterceptor("file", {
+  @UseInterceptors(FileInterceptor("file", {storage : storageFile}))
+  writeMovie(
+    @UploadedFile() file : Express.Multer.File,
+    @Body() data : CreateFileDto,
+    @Param("id") id : string
+  ){
+    return this.moviesService.writeMovie(data,file,id)
+  }
+
+  @Get("getall")
+  getAll(){
+    return this.moviesService.findAll()
+  }
+
+  @Put("movies/:id/files")
+  @UseInterceptors(FileInterceptor("poster", {
     storage : diskStorage({
-      destination : "./uploads/files",
+      destination : "./uploads/posters",
       filename(req, file, callback) {
         const newName = uuidv4() + extname(file.originalname)
         callback(null,newName)
       },
     }),
     fileFilter(req, file, callback) {
+      if(!file) {
+        return callback(null,false)
+      }
       callback(null,true)
     },
   }))
-  writeMovie(
+  updateMovie(
     @UploadedFile() file : Express.Multer.File,
-    @Body() data : CreateFileDto,
+    @Body() data : UpdateMoviesDto,
     @Param("id") id : string
   ){
-    return this.moviesCounterService.writeMovie(data,file,id)
+    return this.moviesService.update(id , data, file || null)
   }
-  @Get("getall")
-  getAll(){
-    return this.moviesCounterService.findAll()
+
+  @Delete("remove/:id")
+  deleteMovie(@Param("id") id : string){
+    return this.moviesService.remove(id)
+  }
+
+  @Get("m-ct/getall")
+  getMCt(){
+    return this.moviesService.getAllMCt()
   }
 }

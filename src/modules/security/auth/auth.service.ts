@@ -1,12 +1,12 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { JwtConnectionService } from 'src/core/micro-service/jwt/jwt.connection.service';
 import { MailerConnectionService } from 'src/core/micro-service/email/mailer.connection.service';
-import { UserService } from '../user/user.service';
-import { CreateUserDto } from '../user/dto/create-user.dto';
+import { UserService } from '../../users/user/user.service';
+import { CreateUserDto } from '../../users/user/dto/create-user.dto';
 import { LoginAuthDto } from './dto/login.auth.dto';
 import { RedisConnectService } from 'src/core/micro-service/cache/redis.connection.service';
 import { ConfigService } from '@nestjs/config';
-import { ProfileService } from '../profile/profile.service';
+import { ProfileService } from '../../users/profile/profile.service';
 
 @Injectable()
 export class AuthService {

@@ -5,9 +5,12 @@ import {
   DataType,
   PrimaryKey,
   Default,
+  ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
-import {  QualityType, Subscription_type } from 'src/core/types/movies.types';
+import {  QualityType } from 'src/core/types/movies.types';
+import { Movies } from './movies.entity';
 
 
 @Table({
@@ -21,8 +24,12 @@ export class MovieFile extends Model {
   @Column({ type: DataType.STRING })
   declare id: string;
 
+  @ForeignKey(() => Movies)
   @Column({ type: DataType.STRING, allowNull: false })
   declare movie_id: string;
+
+  @BelongsTo(() => Movies)
+  movie : Movies
 
   @Column({ type: DataType.STRING })
   declare file_url: string;

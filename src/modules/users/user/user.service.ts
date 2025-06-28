@@ -9,7 +9,7 @@ import { ProfileService } from '../profile/profile.service';
 export class UserService {
   constructor(
     @InjectModel(User) private readonly userModel: typeof User,
-    private readonly profileService: ProfileService,
+    // private readonly profileService: ProfileService,
   ) {}
 
   async create(createUserDto: CreateUserDto,isVerify = false) {
@@ -17,16 +17,19 @@ export class UserService {
     const newUser = await this.userModel.create({ ...createUserDto ,isVerify});
     return newUser.toJSON();
   }
+
   async findByEmail(email: string): Promise<User | null> {
     const user = await this.userModel.findOne({ where: { email } });
     return user;
   }
+  
   async findByUsername(username: string): Promise<User | null> {
     const exists = await this.userModel.findOne({
       where: { username },
     });
     return exists;
   }
+
   async checkExists(createUserDto : CreateUserDto){
     const exists = [
       await this.findByEmail(createUserDto.email),
@@ -38,8 +41,9 @@ export class UserService {
       throw new ConflictException("Username already exists !")
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    const users = await this.userModel.findAll()
+    return users.map(user => user.toJSON());
   }
 
   async findOne(id: number): Promise<User | null> {

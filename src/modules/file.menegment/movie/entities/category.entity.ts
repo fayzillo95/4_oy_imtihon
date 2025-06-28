@@ -5,9 +5,12 @@ import {
   DataType,
   PrimaryKey,
   Default,
+  HasMany,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import {  Subscription_type } from 'src/core/types/movies.types';
+import { MovieCategories } from './movie.categories';
+import { Movies } from './movies.entity';
 
 
 @Table({ tableName: 'categories', updatedAt: false, createdAt: true })
@@ -25,4 +28,7 @@ export class MovieCategory extends Model {
 
   @Column({ type: DataType.TEXT })
   declare description: string;
+
+  @HasMany(() => MovieCategories)
+  movies : Movies[]
 }

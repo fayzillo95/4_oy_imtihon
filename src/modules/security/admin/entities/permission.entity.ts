@@ -1,6 +1,6 @@
-import { Column, DataType, Default, ForeignKey, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript"
+import { BelongsTo, Column, DataType, Default, ForeignKey, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript"
 import { v4 as uuidv4 } from "uuid"
-import { User } from "../../user/entities/user.entity"
+import { User } from "../../../users/user/entities/user.entity"
 import { Actions, Models } from "src/core/types/users.types"
 
 @Table({
@@ -21,7 +21,7 @@ export class Permission extends Model{
     })
     declare user_id : string
     
-    @HasOne(() =>User)
+    @BelongsTo(() => User)
     user : User
     
     @Column({
