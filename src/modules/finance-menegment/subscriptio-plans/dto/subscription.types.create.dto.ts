@@ -1,3 +1,1 @@
-export class CreateSubscriptionPlansDto {
-
-}
+export class CreateSubscriptionPlansDto {}

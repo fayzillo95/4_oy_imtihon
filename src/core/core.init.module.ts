@@ -8,12 +8,12 @@ import { join } from 'path';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), "uploads", "posters"),
-      serveRoot: "/posters"
+      rootPath: join(process.cwd(), 'uploads', 'posters'),
+      serveRoot: '/posters',
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), "uploads", "fies"),
-      serveRoot: "/files"
+      rootPath: join(process.cwd(), 'uploads', 'fies'),
+      serveRoot: '/files',
     }),
     DatabaseConnectModule,
     RedisConnectionModule,
@@ -21,4 +21,4 @@ import { join } from 'path';
     JwtConnectionModule,
   ],
 })
-export class CoreInitModule { }
+export class CoreInitModule {}

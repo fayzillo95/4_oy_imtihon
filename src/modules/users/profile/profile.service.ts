@@ -51,7 +51,7 @@ export class ProfileService {
     );
     return {
       oldProfiel: exists,
-      updatetedProfile : await this.findOne(id),
+      updatetedProfile: await this.findOne(id),
     };
   }
 

@@ -6,7 +6,7 @@ import { User } from '../user/entities/user.entity';
 import { Movies } from 'src/modules/file.menegment/movie/entities/movies.entity';
 
 @Module({
-  imports : [SequelizeModule.forFeature([User,Movies])],
+  imports: [SequelizeModule.forFeature([User, Movies])],
   controllers: [FavoritesController],
   providers: [FavoritesService],
 })

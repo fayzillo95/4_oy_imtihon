@@ -1,45 +1,52 @@
-import { Column, Default, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
-import { DataType } from "sequelize-typescript";
-import { v4 as uuidv4 } from "uuid";
-import { UserSubscription } from "../../user_subscriptions/entities/user_subscription.entity";
+import {
+  Column,
+  Default,
+  HasMany,
+  Model,
+  PrimaryKey,
+  Table,
+} from 'sequelize-typescript';
+import { DataType } from 'sequelize-typescript';
+import { v4 as uuidv4 } from 'uuid';
+import { UserSubscription } from '../../user_subscriptions/entities/user_subscription.entity';
 
 @Table({
-    tableName : "subscription_plans"
+  tableName: 'subscription_plans',
 })
 export class SubscriptionPlans extends Model {
-    @PrimaryKey
-    @Default(() => uuidv4())
-    @Column({
-        type : DataType.STRING
-    })
-    declare id :string
-    
-    @Column({
-        type : DataType.STRING
-    })
-    declare name : string
-    
-    @Column({
-        type : DataType.DECIMAL(2,1)
-    })
-    declare price : number
-    
-    @Column({
-        type : DataType.STRING
-    })
-    declare duration_days : number
-    
-    @Column({
-        type : DataType.JSON
-    })
-    declare features : string[]
-    
-    @Default(() => false)
-    @Column({
-        type : DataType.BOOLEAN
-    })
-    declare isActive : boolean
+  @PrimaryKey
+  @Default(() => uuidv4())
+  @Column({
+    type: DataType.STRING,
+  })
+  declare id: string;
 
-    @HasMany(() => UserSubscription)
-    subscriptions : UserSubscription[]
+  @Column({
+    type: DataType.STRING,
+  })
+  declare name: string;
+
+  @Column({
+    type: DataType.DECIMAL(2, 1),
+  })
+  declare price: number;
+
+  @Column({
+    type: DataType.STRING,
+  })
+  declare duration_days: number;
+
+  @Column({
+    type: DataType.JSON,
+  })
+  declare features: string[];
+
+  @Default(() => false)
+  @Column({
+    type: DataType.BOOLEAN,
+  })
+  declare isActive: boolean;
+
+  @HasMany(() => UserSubscription)
+  subscriptions: UserSubscription[];
 }

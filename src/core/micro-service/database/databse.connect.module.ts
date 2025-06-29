@@ -1,7 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
-import {  Movies} from 'src/modules/file.menegment/movie/entities/movies.entity';
+import { Movies } from 'src/modules/file.menegment/movie/entities/movies.entity';
 import { MovieCategories } from 'src/modules/file.menegment/movie/entities/movie.categories';
 import { MovieCategory } from 'src/modules/file.menegment/movie/entities/category.entity';
 import { MovieFile } from 'src/modules/file.menegment/movie/entities/movie_file.entity';
@@ -28,23 +28,22 @@ import { Payment } from 'src/modules/finance-menegment/payments/entities/payment
         synchronize: true,
         autoLoadModels: true,
         models: [
-            User, 
-            Profile, 
-            Movies, 
-            MovieFile,
-            MovieCategory, 
-            MovieCategories,
-            Favorite,
-            SubscriptionPlans,
-            Reviews,
-            WatchHistory,
-            Permission,
-            UserSubscription,
-            Payment,
-            
+          User,
+          Profile,
+          Movies,
+          MovieFile,
+          MovieCategory,
+          MovieCategories,
+          Favorite,
+          SubscriptionPlans,
+          Reviews,
+          WatchHistory,
+          Permission,
+          UserSubscription,
+          Payment,
         ],
-        logQueryParameters : false,
-        logging : false
+        logQueryParameters: false,
+        logging: false,
       }),
     }),
   ],

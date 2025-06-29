@@ -33,5 +33,3 @@ export class MovieCategories extends Model {
   @BelongsTo(() => MovieCategory)
   category: MovieCategory;
 }
-
-

@@ -1,7 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
 import { CreateFavoriteDto } from './dto/create-favorite.dto';
-import { UpdateFavoriteDto } from './dto/update-favorite.dto';
 
 @Controller('favorites')
 export class FavoritesController {
@@ -17,18 +24,28 @@ export class FavoritesController {
     return this.favoritesService.findAll();
   }
 
-  @Get(':id')
+  @Get('get-one/:id')
   findOne(@Param('id') id: string) {
-    return this.favoritesService.findOne(+id);
+    return this.favoritesService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFavoriteDto: UpdateFavoriteDto) {
-    return this.favoritesService.update(+id, updateFavoriteDto);
+  @Patch('update-one/:id')
+  update(@Param('id') id: string, @Body() data: Partial<CreateFavoriteDto>) {
+    return this.favoritesService.update(id, data);
   }
 
-  @Delete(':id')
+  @Get('get-one/by-user-id/:id')
+  getByUserId(@Param('id') id: string) {
+    return this.favoritesService.findByUserId(id);
+  }
+
+  @Get('get-one/by-movie-id/:id')
+  getByMovieId(@Param('id') id: string) {
+    return this.favoritesService.findByUserId(id);
+  }
+
+  @Delete('delete-one/:id')
   remove(@Param('id') id: string) {
-    return this.favoritesService.remove(+id);
+    return this.favoritesService.remove(id);
   }
 }

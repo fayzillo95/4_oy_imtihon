@@ -1,4 +1,3 @@
-
 export enum Subscription_type {
   free = 'free',
   gold = 'gold',
@@ -20,4 +19,11 @@ export const SubscriptionTime = {
   },
 } as const;
 
-export enum QualityType{'240p'="240p", '360p'="360p", '480p'="480p", '720p'="720p", '1080p'="1080p", '4K'='4K'}
+export enum QualityType {
+  '240p' = '240p',
+  '360p' = '360p',
+  '480p' = '480p',
+  '720p' = '720p',
+  '1080p' = '1080p',
+  '4K' = '4K',
+}

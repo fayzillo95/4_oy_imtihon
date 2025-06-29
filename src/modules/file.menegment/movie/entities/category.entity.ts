@@ -8,10 +8,9 @@ import {
   HasMany,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
-import {  Subscription_type } from 'src/core/types/movies.types';
+import { Subscription_type } from 'src/core/types/movies.types';
 import { MovieCategories } from './movie.categories';
 import { Movies } from './movies.entity';
-
 
 @Table({ tableName: 'categories', updatedAt: false, createdAt: true })
 export class MovieCategory extends Model {
@@ -30,5 +29,5 @@ export class MovieCategory extends Model {
   declare description: string;
 
   @HasMany(() => MovieCategories)
-  movies : Movies[]
+  movies: Movies[];
 }

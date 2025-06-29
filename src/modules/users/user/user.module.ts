@@ -7,7 +7,7 @@ import { ProfileModule } from '../profile/profile.module';
 import { Movies } from 'src/modules/file.menegment/movie/entities/movies.entity';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User,Movies]), ProfileModule],
+  imports: [SequelizeModule.forFeature([User, Movies]), ProfileModule],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService],

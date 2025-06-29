@@ -9,14 +9,13 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
-import {  QualityType } from 'src/core/types/movies.types';
+import { QualityType } from 'src/core/types/movies.types';
 import { Movies } from './movies.entity';
 
-
 @Table({
-  tableName : "movie_files",
-  updatedAt : false,
-  createdAt : true
+  tableName: 'movie_files',
+  updatedAt: false,
+  createdAt: true,
 })
 export class MovieFile extends Model {
   @PrimaryKey
@@ -29,7 +28,7 @@ export class MovieFile extends Model {
   declare movie_id: string;
 
   @BelongsTo(() => Movies)
-  movie : Movies
+  movie: Movies;
 
   @Column({ type: DataType.STRING })
   declare file_url: string;
@@ -41,9 +40,9 @@ export class MovieFile extends Model {
   declare quality: typeof QualityType;
 
   @Column({
-    type : DataType.DECIMAL(3,2)
+    type: DataType.DECIMAL(3, 2),
   })
-  declare size_mb : number
+  declare size_mb: number;
 
   @Column({ type: DataType.STRING, defaultValue: 'uz' })
   declare language: string;

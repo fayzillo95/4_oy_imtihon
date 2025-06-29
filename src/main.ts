@@ -17,8 +17,7 @@ async function bootstrap() {
   // await initReleations(),
   app.setGlobalPrefix('api');
   await app.listen(process.env.APP_PORT ?? 12312);
-  
-  console.log(`http://${process.env.APP_HOST}:${process.env.APP_PORT}/api`)
+
+  console.log(`http://${process.env.APP_HOST}:${process.env.APP_PORT}/api`);
 }
 bootstrap();
-

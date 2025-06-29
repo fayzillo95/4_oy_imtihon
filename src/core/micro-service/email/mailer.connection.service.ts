@@ -13,7 +13,7 @@ export class MailerConnectionService {
     },
   });
 
-  async sendRegisterVerify(email: string,url : string) {
+  async sendRegisterVerify(email: string, url: string) {
     const result = await this.email.sendMail({
       to: email,
       from: "Auth Service : '<fayzillofn30@gmail.com>'",

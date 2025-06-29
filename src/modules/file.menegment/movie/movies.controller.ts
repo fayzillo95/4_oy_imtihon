@@ -27,68 +27,70 @@ import { Request } from 'express';
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
-  @Get("getall")
-  getAll(){
-    return this.moviesService.findAll()
+  @Get('getall')
+  getAll() {
+    return this.moviesService.findAll();
   }
 
-  @Get("/movie-detailes/:id")
+  @Get('/movie-detailes/:id')
   @UseGuards(JwtAuthGuard)
-  getMovieDetaiels(@Param("id") id : string,@Req() req : Request){
-    const user_id = req['user'].id
-    return this.moviesService.findOneMovieDetailes(id,user_id)
+  getMovieDetaiels(@Param('id') id: string, @Req() req: Request) {
+    const user_id = req['user'].id;
+    return this.moviesService.findOneMovieDetailes(id, user_id);
   }
 
   @Post('add-movie/detailes')
-  @UseInterceptors(FileInterceptor('poster', {storage : storagePoster}))
+  @UseInterceptors(FileInterceptor('poster', { storage: storagePoster }))
   createMovie(
     @Body() createMovieDto: CreateMovieDto,
-    @UploadedFile() poster : Express.Multer.File
+    @UploadedFile() poster: Express.Multer.File,
   ) {
-    return this.moviesService.create(createMovieDto,poster);
+    return this.moviesService.create(createMovieDto, poster);
   }
 
-  @Post("movies/:id/files")
-  @UseInterceptors(FileInterceptor("file", {storage : storageFile}))
+  @Post('movies/:id/files')
+  @UseInterceptors(FileInterceptor('file', { storage: storageFile }))
   writeMovie(
-    @UploadedFile() file : Express.Multer.File,
-    @Body() data : CreateFileDto,
-    @Param("id") id : string
-  ){
-    return this.moviesService.writeMovie(data,file,id)
+    @UploadedFile() file: Express.Multer.File,
+    @Body() data: CreateFileDto,
+    @Param('id') id: string,
+  ) {
+    return this.moviesService.writeMovie(data, file, id);
   }
 
-  @Put("movies/:id/files")
-  @UseInterceptors(FileInterceptor("poster", {
-    storage : diskStorage({
-      destination : "./uploads/posters",
-      filename(req, file, callback) {
-        const newName = uuidv4() + extname(file.originalname)
-        callback(null,newName)
+  @Put('movies/:id/files')
+  @UseInterceptors(
+    FileInterceptor('poster', {
+      storage: diskStorage({
+        destination: './uploads/posters',
+        filename(req, file, callback) {
+          const newName = uuidv4() + extname(file.originalname);
+          callback(null, newName);
+        },
+      }),
+      fileFilter(req, file, callback) {
+        if (!file) {
+          return callback(null, false);
+        }
+        callback(null, true);
       },
     }),
-    fileFilter(req, file, callback) {
-      if(!file) {
-        return callback(null,false)
-      }
-      callback(null,true)
-    },
-  }))
+  )
   updateMovie(
-    @UploadedFile() file : Express.Multer.File,
-    @Body() data : UpdateMoviesDto,
-    @Param("id") id : string
-  ){
-    return this.moviesService.update(id , data, file || null)
+    @UploadedFile() file: Express.Multer.File,
+    @Body() data: UpdateMoviesDto,
+    @Param('id') id: string,
+  ) {
+    return this.moviesService.update(id, data, file || null);
   }
 
-  @Delete("remove/:id")
-  deleteMovie(@Param("id") id : string){
-    return this.moviesService.remove(id)
+  @Delete('remove/:id')
+  deleteMovie(@Param('id') id: string) {
+    return this.moviesService.remove(id);
   }
 
-  @Get("m-ct/getall")
-  getMCt(){
-    return this.moviesService.getAllMCt()
+  @Get('m-ct/getall')
+  getMCt() {
+    return this.moviesService.getAllMCt();
   }
 }

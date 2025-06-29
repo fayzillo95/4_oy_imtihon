@@ -37,16 +37,15 @@ export class CreateMovieDto {
   @IsArray()
   @IsString({ each: true })
   category_ids: string[];
-
 }
 
-export class CreateFileDto{
+export class CreateFileDto {
   @IsString()
-  @IsEnum(QualityType)  
-  quality : string
+  @IsEnum(QualityType)
+  quality: string;
 
   @IsString()
   @IsNotEmpty()
   @Length(2)
-  language : string 
+  language: string;
 }

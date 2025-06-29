@@ -9,7 +9,7 @@ import {
   HasOne,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
-import {  Subscription_type } from 'src/core/types/movies.types';
+import { Subscription_type } from 'src/core/types/movies.types';
 import { MovieCategories } from './movie.categories';
 import { MovieFile } from './movie_file.entity';
 import { Favorite } from 'src/modules/users/user-favorite/entities/favorite.entity';
@@ -48,12 +48,12 @@ export class Movies extends Model {
 
   @Column({ type: DataType.DECIMAL(3, 1), defaultValue: Number(0) })
   declare rating: number;
-  
+
   @Default(0)
   @Column({
-    type : DataType.INTEGER
+    type: DataType.INTEGER,
   })
-  declare view_count : number
+  declare view_count: number;
 
   @Column({
     type: DataType.ENUM(...Object.values(Subscription_type)),
@@ -62,17 +62,17 @@ export class Movies extends Model {
   declare subscription_type: Subscription_type;
 
   @HasMany(() => MovieCategories)
-  categories : MovieCategories[]
+  categories: MovieCategories[];
 
   @HasOne(() => MovieFile)
-  movie_file : MovieFile
+  movie_file: MovieFile;
 
   @HasMany(() => Favorite)
-  favorite : Favorite[]
+  favorite: Favorite[];
 
   @HasMany(() => WatchHistory)
-  watch_hitory : WatchHistory[]
+  watch_hitory: WatchHistory[];
 
   @HasMany(() => Reviews)
-  reviews  : Reviews
+  reviews: Reviews;
 }

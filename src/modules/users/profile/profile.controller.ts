@@ -36,11 +36,12 @@ export class ProfileController {
     const { id } = req['user'];
     return this.profileService.findByUserId(id);
   }
-  
+
   @Patch('update-one/:id')
-  update(@Param('id') id: string, @Body() data : UpdateProfileDto) {
-    if(!isUuid(id)) throw new BadRequestException("Ivalid user id !")
-    if(Object.values(data).length === 0) throw new BadRequestException("Invalid data empty values or object !")
+  update(@Param('id') id: string, @Body() data: UpdateProfileDto) {
+    if (!isUuid(id)) throw new BadRequestException('Ivalid user id !');
+    if (Object.values(data).length === 0)
+      throw new BadRequestException('Invalid data empty values or object !');
     return this.profileService.update(id, data);
   }
 

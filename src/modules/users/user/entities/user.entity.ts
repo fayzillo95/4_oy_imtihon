@@ -1,4 +1,10 @@
-import { DataType, Default, HasMany, HasOne, PrimaryKey } from 'sequelize-typescript';
+import {
+  DataType,
+  Default,
+  HasMany,
+  HasOne,
+  PrimaryKey,
+} from 'sequelize-typescript';
 import { Column, Model, Table } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { Profile } from '../../profile/entities/profile.entity';
@@ -13,7 +19,7 @@ import { UserSubscription } from 'src/modules/finance-menegment/user_subscriptio
   createdAt: true,
   updatedAt: false,
 })
-/** 
+/**
  * @proporty id: UUID PRIMARY KEY
  * @proporty username: VARCHAR(50) UNIQUE
  * @proporty email: VARCHAR(100) UNIQUE
@@ -21,7 +27,7 @@ import { UserSubscription } from 'src/modules/finance-menegment/user_subscriptio
  * @proporty role: ENUM('user', 'admin', 'superadmin') DEFAULT 'user'
  * @proporty avatar_url: VARCHAR(255)
  * @proporty created_at: TIMESTAMP DEFAULT NOW()
- * 
+ *
  */
 export class User extends Model {
   @PrimaryKey
@@ -60,17 +66,17 @@ export class User extends Model {
   profile: Profile;
 
   @HasMany(() => Favorite)
-  favorite : Favorite[]
+  favorite: Favorite[];
 
-  @HasMany(() => WatchHistory)  
-  watch_history : WatchHistory[]
+  @HasMany(() => WatchHistory)
+  watch_history: WatchHistory[];
 
   @HasMany(() => Reviews)
-  reciews : Reviews[]
+  reciews: Reviews[];
 
   @HasMany(() => Permission)
-  permissions : Permission[]
+  permissions: Permission[];
 
   @HasMany(() => UserSubscription)
-  subscriptions : UserSubscription[]
+  subscriptions: UserSubscription[];
 }

@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PermissionService } from './services/permission.service';
 import { RoleDto } from './dto/create-admin.dto';
 import { UpdatePermission } from './dto/update-admin.dto';
@@ -10,20 +18,20 @@ import { CreatePermissionDto } from './dto/create.permission.dto';
 export class AdminController {
   constructor(
     private readonly permissionService: PermissionService,
-    private readonly roleService : RoleService
+    private readonly roleService: RoleService,
   ) {}
 
-  @Post("create-role")
+  @Post('create-role')
   updateRole(@Body() RoleDto: RoleDto) {
     return this.roleService.updateRole(RoleDto);
   }
 
-  @Post("create-permission")
-  createPermission(@Body() data : CreatePermissionDto){
-    return this.permissionService.createPermission(data)
+  @Post('create-permission')
+  createPermission(@Body() data: CreatePermissionDto) {
+    return this.permissionService.createPermission(data);
   }
 
-  @Get("permissions/getall")
+  @Get('permissions/getall')
   findAllPermissions() {
     return this.permissionService.findAllPermissions();
   }
@@ -34,7 +42,11 @@ export class AdminController {
   }
 
   @Patch('update-permission/by-userid/:model/:id')
-  update(@Param('id') id: string,@Param("model") models : Models[], @Body() data : Actions[]) {
+  update(
+    @Param('id') id: string,
+    @Param('model') models: Models[],
+    @Body() data: Actions[],
+  ) {
     return this.permissionService.updatePermissionByUserId(id, models, data);
   }
 

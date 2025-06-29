@@ -12,9 +12,9 @@ export class UserService {
     // private readonly profileService: ProfileService,
   ) {}
 
-  async create(createUserDto: CreateUserDto,isVerify = false) {
-    await this.checkExists(createUserDto)
-    const newUser = await this.userModel.create({ ...createUserDto ,isVerify});
+  async create(createUserDto: CreateUserDto, isVerify = false) {
+    await this.checkExists(createUserDto);
+    const newUser = await this.userModel.create({ ...createUserDto, isVerify });
     return newUser.toJSON();
   }
 
@@ -22,7 +22,7 @@ export class UserService {
     const user = await this.userModel.findOne({ where: { email } });
     return user;
   }
-  
+
   async findByUsername(username: string): Promise<User | null> {
     const exists = await this.userModel.findOne({
       where: { username },
@@ -30,24 +30,22 @@ export class UserService {
     return exists;
   }
 
-  async checkExists(createUserDto : CreateUserDto){
+  async checkExists(createUserDto: CreateUserDto) {
     const exists = [
       await this.findByEmail(createUserDto.email),
       await this.findByUsername(createUserDto.username),
     ];
-    if (exists[0])
-      throw new ConflictException('User eamil already exists !');
-    if(exists[1])
-      throw new ConflictException("Username already exists !")
+    if (exists[0]) throw new ConflictException('User eamil already exists !');
+    if (exists[1]) throw new ConflictException('Username already exists !');
   }
 
   async findAll() {
-    const users = await this.userModel.findAll()
-    return users.map(user => user.toJSON());
+    const users = await this.userModel.findAll();
+    return users.map((user) => user.toJSON());
   }
-  async findById(id : string){
-    const user = await this.userModel.findByPk(id)
-    return user
+  async findById(id: string) {
+    const user = await this.userModel.findByPk(id);
+    return user;
   }
   async findOne(id: number): Promise<User | null> {
     const exists = await this.userModel.findOne({

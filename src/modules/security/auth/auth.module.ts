@@ -13,7 +13,7 @@ import { ProfileModule } from '../../users/profile/profile.module';
     MailerConnectionModule,
     JwtConnectionModule,
     RedisConnectionModule,
-    ProfileModule
+    ProfileModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],

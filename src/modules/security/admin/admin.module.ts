@@ -9,13 +9,8 @@ import { UserService } from 'src/modules/users/user/user.service';
 import { Movies } from 'src/modules/file.menegment/movie/entities/movies.entity';
 
 @Module({
-  imports : [SequelizeModule.forFeature([User,Permission,Movies])],
+  imports: [SequelizeModule.forFeature([User, Permission, Movies])],
   controllers: [AdminController],
-  providers: [
-    PermissionService,
-    RoleService,
-    UserService,
-
-  ],
+  providers: [PermissionService, RoleService, UserService],
 })
 export class AdminModule {}
