@@ -14,7 +14,7 @@ import { User } from '../../../users/user/entities/user.entity';
 import { Actions, Models } from 'src/core/types/users.types';
 
 @Table({
-  tableName: 'permissions',
+  tableName: Models.Permission,
   timestamps: false,
 })
 export class Permission extends Model {

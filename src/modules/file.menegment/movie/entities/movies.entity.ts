@@ -15,9 +15,10 @@ import { MovieFile } from './movie_file.entity';
 import { Favorite } from 'src/modules/users/user-favorite/entities/favorite.entity';
 import { WatchHistory } from 'src/modules/users/watch-history/entities/watch-history.entity';
 import { Reviews } from 'src/modules/users/user-reviews/entities/user-review.entity';
+import { Models } from 'src/core/types/users.types';
 
 @Table({
-  tableName: 'movies',
+  tableName: Models.Movies,
   underscored: true,
   createdAt: true,
   updatedAt: true,

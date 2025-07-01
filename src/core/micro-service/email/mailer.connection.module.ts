@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { MailerConnectionService } from './mailer.connection.service';
 
+@Global()
 @Module({
   providers: [MailerConnectionService],
   exports: [MailerConnectionService],

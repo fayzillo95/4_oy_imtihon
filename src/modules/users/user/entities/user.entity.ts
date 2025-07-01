@@ -13,9 +13,10 @@ import { WatchHistory } from '../../watch-history/entities/watch-history.entity'
 import { Reviews } from '../../user-reviews/entities/user-review.entity';
 import { Permission } from 'src/modules/security/admin/entities/permission.entity';
 import { UserSubscription } from 'src/modules/finance-menegment/user_subscriptions/entities/user_subscription.entity';
+import { Models } from 'src/core/types/users.types';
 
 @Table({
-  tableName: 'users',
+  tableName: Models.Users,
   createdAt: true,
   updatedAt: false,
 })

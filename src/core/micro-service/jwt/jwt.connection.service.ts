@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Global, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from 'src/core/types/jwt.types';
@@ -38,7 +38,6 @@ export class JwtConnectionService {
   }
 
   async verifyAccessToken(token: string): Promise<JwtPayload> {
-    console.log(token);
     const result = await this.jwtService.verifyAsync(token, {
       secret: this.config.get<string>('JWT_ACCESS_KEY'),
     });

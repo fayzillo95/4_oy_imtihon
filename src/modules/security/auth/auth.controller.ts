@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Res,
+  SetMetadata,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../../users/user/dto/create-user.dto';
 import { LoginAuthDto } from './dto/login.auth.dto';
@@ -6,6 +14,7 @@ import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
+@SetMetadata('isPublic', true)
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -16,6 +25,7 @@ export class AuthController {
   register(@Body() data: CreateUserDto) {
     return this.authService.sendVerifyUrl(data);
   }
+
   @Get('verify/:token')
   async verify(@Param('token') token: string, @Res() res: Response) {
     const result = await this.authService.verificationUserAndRegister(token);

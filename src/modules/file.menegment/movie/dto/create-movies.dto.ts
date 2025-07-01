@@ -33,7 +33,12 @@ export class CreateMovieDto {
   @IsEnum(Subscription_type)
   subscription_type?: Subscription_type;
 
-  @Transform((e) => JSON.parse(e.value))
+  @Transform((e) => {
+    console.log(e.value.split(','));
+    // if (Array.isArray(e.value)) e.value
+    // JSON.parse(e.value)
+    return e.value.split(',');
+  })
   @IsArray()
   @IsString({ each: true })
   category_ids: string[];

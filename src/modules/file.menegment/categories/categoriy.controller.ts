@@ -6,12 +6,17 @@ import {
   Delete,
   Param,
   Patch,
+  SetMetadata,
 } from '@nestjs/common';
 import { MovieCategoryCreateDto } from './dto/movie.category.dto';
 import { CategoryService } from './category.service.service';
 import { MovieCategoryUpdateDto } from './dto/movie.category.update.dto';
+import { ApiCookieAuth } from '@nestjs/swagger';
+import { Models } from 'src/core/types/users.types';
 
 @Controller('category')
+@ApiCookieAuth('Categoriy ')
+@SetMetadata('modelname', Models.Categoris)
 export class CategoriyController {
   constructor(private readonly categoryService: CategoryService) {}
 

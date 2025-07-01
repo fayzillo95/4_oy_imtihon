@@ -8,13 +8,7 @@ import { RedisConnectionModule } from 'src/core/micro-service/cache/redis.connec
 import { ProfileModule } from '../../users/profile/profile.module';
 
 @Module({
-  imports: [
-    UserModule,
-    MailerConnectionModule,
-    JwtConnectionModule,
-    RedisConnectionModule,
-    ProfileModule,
-  ],
+  imports: [UserModule, ProfileModule],
   controllers: [AuthController],
   providers: [AuthService],
 })

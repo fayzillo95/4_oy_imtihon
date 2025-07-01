@@ -11,9 +11,10 @@ import {
 import { User } from '../../user/entities/user.entity';
 import { Movies } from 'src/modules/file.menegment/movie/entities/movies.entity';
 import { v4 as uuidv4 } from 'uuid';
+import { Models } from 'src/core/types/users.types';
 
 @Table({
-  tableName: 'reviews',
+  tableName: Models.Reviews,
   createdAt: true,
   updatedAt: false,
 })
@@ -37,17 +38,17 @@ export class Reviews extends Model {
   @Column({ type: DataType.STRING, allowNull: false })
   declare movie_id: string;
   @BelongsTo(() => Movies)
-  movie: Movies;
+  declare movie: Movies;
 
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.DECIMAL(3, 2),
     allowNull: false,
   })
-  rating: number;
+  declare rating: number;
 
   @Default('No comment ! ')
   @Column({
     type: DataType.STRING,
   })
-  comment: string;
+  declare comment: string;
 }

@@ -3,8 +3,8 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './entities/user.entity';
-import { ProfileModule } from '../profile/profile.module';
 import { Movies } from 'src/modules/file.menegment/movie/entities/movies.entity';
+import { ProfileModule } from '../profile/profile.module';
 
 @Module({
   imports: [SequelizeModule.forFeature([User, Movies]), ProfileModule],

@@ -6,12 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  SetMetadata,
 } from '@nestjs/common';
 import { SubscriptionPlansService } from './subscription.types.service';
 import { CreateSubscriptionPlansDto } from './dto/subscription.types.create.dto';
 import { UpdateSubscriptionPlansDto } from './dto/subscription.types.update.dto';
+import { Models } from 'src/core/types/users.types';
 
-@Controller('finance-menegment')
+@Controller('subscription-plans')
+@SetMetadata('modelname', Models.Subscription_plans)
 export class SubscriptionPlansController {
   constructor(
     private readonly subscriptionPlansService: SubscriptionPlansService,

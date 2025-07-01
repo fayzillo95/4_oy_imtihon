@@ -13,9 +13,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { User } from '../../../users/user/entities/user.entity';
 import { SubscriptionPlans } from 'src/modules/finance-menegment/subscriptio-plans/entities/subscription.types.entity';
 import { Payment } from '../../payments/entities/payment.entity';
+import { Models } from 'src/core/types/users.types';
 
 @Table({
-  tableName: 'user_subscriptions',
+  tableName: Models.User_subscriptions,
   timestamps: true,
 })
 export class UserSubscription extends Model {
@@ -38,17 +39,19 @@ export class UserSubscription extends Model {
   @Column({
     type: DataType.STRING,
   })
-  declare paln_id: string;
+  declare plan_id: string;
   @BelongsTo(() => SubscriptionPlans)
   plans: SubscriptionPlans;
 
   @Column({
     type: DataType.STRING,
+    allowNull  : true
   })
   declare start_date: Date;
 
   @Column({
     type: DataType.STRING,
+    allowNull : true
   })
   declare end_date: Date;
 

@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  SetMetadata,
 } from '@nestjs/common';
 import { PermissionService } from './services/permission.service';
 import { RoleDto } from './dto/create-admin.dto';
@@ -13,8 +14,11 @@ import { UpdatePermission } from './dto/update-admin.dto';
 import { Actions, Models } from 'src/core/types/users.types';
 import { RoleService } from './services/role.service';
 import { CreatePermissionDto } from './dto/create.permission.dto';
+import { ApiBasicAuth } from '@nestjs/swagger';
 
 @Controller('admin')
+@ApiBasicAuth('Admin Controller ')
+@SetMetadata('modelname', Models.Permission)
 export class AdminController {
   constructor(
     private readonly permissionService: PermissionService,

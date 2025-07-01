@@ -10,9 +10,10 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from '../../user/entities/user.entity';
+import { Models } from 'src/core/types/users.types';
 
 @Table({
-  tableName: 'profile',
+  tableName: Models.Profile,
   createdAt: true,
   updatedAt: true,
 })

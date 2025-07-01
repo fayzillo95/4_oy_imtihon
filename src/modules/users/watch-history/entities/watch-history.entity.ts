@@ -9,13 +9,13 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { BasedModel } from 'src/core/types/users.types';
+import { Models } from 'src/core/types/users.types';
 import { User } from '../../user/entities/user.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { Movies } from 'src/modules/file.menegment/movie/entities/movies.entity';
 
 @Table({
-  tableName: 'watch_history',
+  tableName: Models.WatchHistory,
   timestamps: true,
 })
 export class WatchHistory extends Model {

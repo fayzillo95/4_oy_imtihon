@@ -1,19 +1,25 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { InjectModel } from '@nestjs/sequelize';
 import { ProfileService } from '../profile/profile.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User) private readonly userModel: typeof User,
-    // private readonly profileService: ProfileService,
+    private readonly profileService: ProfileService,
   ) {}
 
   async create(createUserDto: CreateUserDto, isVerify = false) {
     await this.checkExists(createUserDto);
+    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
     const newUser = await this.userModel.create({ ...createUserDto, isVerify });
     return newUser.toJSON();
   }
@@ -58,7 +64,19 @@ export class UserService {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
+  async remove(id: string) {
+    const existsUser = await this.userModel.findByPk(id);
+    if (!existsUser)
+      throw new NotFoundException(`User not found by id : [ ${id} ]`);
+    await existsUser.destroy();
+    return `This action removes a #${id} user`;
+  }
+
+  async destroyMyAccaunt(id: string) {
+    const existsUser = await this.userModel.findByPk(id);
+    if (!existsUser)
+      throw new NotFoundException(`User not found by id : [ ${id} ]`);
+    await existsUser.destroy();
     return `This action removes a #${id} user`;
   }
 }

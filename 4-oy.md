@@ -57,10 +57,12 @@ created_at: TIMESTAMP DEFAULT NOW()
 
 ```
 id: UUID PRIMARY KEY
-user_subscription_id: UUID FOREIGN KEY REFERENCES user_subscriptions(id)
+
+user_subscription_id: UUID 
 amount: DECIMAL(10, 2)
 payment_method: ENUM('card', 'paypal', 'bank_transfer', 'crypto')
 payment_details: JSON
+
 status: ENUM('pending', 'completed', 'failed', 'refunded')
 external_transaction_id: VARCHAR(100)
 created_at: TIMESTAMP DEFAULT NOW()

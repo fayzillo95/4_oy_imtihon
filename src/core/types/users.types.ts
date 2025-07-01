@@ -28,16 +28,19 @@ export enum Actions {
  * // Permission modeliga MOdels enum types
  */
 export enum Models {
-  Profile = 'profile',
   Categoris = 'categories',
-  Movies = 'movies',
-  MovieFile = 'movie_file',
+  Favortie = 'favorites',
   MovieCategories = 'movie_categories',
-  Users = 'users',
+  MovieFile = 'movie_files',
+  Movies = 'movies',
   Payments = 'payments',
-  Subscriptions = 'subscriptions',
+  Permission = 'permissions',
+  Profile = 'profile',
+  Reviews = 'reviews',
   Subscription_plans = 'subscription_plans',
   User_subscriptions = 'user_subscriptions',
+  Users = 'users',
+  WatchHistory = 'watch_history',
 }
 
 /**
@@ -71,36 +74,9 @@ export enum PaymentsStatus {
   REFUNDED = 'refunded',
 }
 
-export class BasedModel extends Model {
-  @PrimaryKey
-  @Default(() => uuidv4())
-  @Column({
-    type: DataType.STRING,
-  })
-  declare id: string;
-
-  @ForeignKey(() => User)
-  @Column({
-    type: DataType.STRING,
-  })
-  declare user_id: string;
-  @BelongsTo(() => User)
-  user: User;
-
-  @ForeignKey(() => Movies)
-  @Column({ type: DataType.STRING, allowNull: false })
-  declare movie_id: string;
-  @BelongsTo(() => Movies)
-  movie: Movies;
+export enum PaymentsMethods{
+  CARD = 'card', 
+  PAYPAL = 'paypal', 
+  BANK_TRANSFER = 'bank_transfer', 
+  CRYPTO = 'crypto'
 }
-
-`
-status: ENUM('active', 'expired', 'canceled', 'pending_payment')
-     DEFAULT 'pending_payment'
-
-payment_method: ENUM('card', 'paypal', 'bank_transfer', 'crypto')
-status: ENUM('pending', 'completed', 'failed', 'refunded')
-
-subscription_type: ENUM('free', 'premium') DEFAULT 'free'
-
-`;

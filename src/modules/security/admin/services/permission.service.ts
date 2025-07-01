@@ -29,7 +29,7 @@ export class PermissionService {
     if (!existsUser) throw new NotFoundException('User not found !');
     const newPermission = await this.permissionModel.create({
       ...data,
-      actions: [data.actions],
+      actions: data.actions,
     });
     return newPermission.toJSON();
   }

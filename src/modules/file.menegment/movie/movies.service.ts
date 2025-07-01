@@ -13,9 +13,10 @@ import { MovieCategory } from './entities/category.entity';
 import { MovieFile } from './entities/movie_file.entity';
 import { MovieCategories } from './entities/movie.categories';
 import { v4 as uuidv4 } from 'uuid';
-import { existsSync, readFileSync, rmdirSync, rmSync } from 'fs';
+import { rmdirSync, rmSync } from 'fs';
 import { join } from 'path';
 import { WatchHistory } from 'src/modules/users/watch-history/entities/watch-history.entity';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class MoviesService {
@@ -40,7 +41,14 @@ export class MoviesService {
     data: CreateMovieDto,
     poster: Express.Multer.File,
   ): Promise<Movies | any> {
+    const newYear = new Date().getFullYear();
+
+    if (data.release_year > +newYear || data.release_year < 1970)
+      throw new BadRequestException('Invalid releation_year !');
+    data.category_ids = [...new Set(data.category_ids)];
+
     const exists = this.checkCategoryExists(data.category_ids);
+
     const slug = uuidv4() + data.title.toLocaleLowerCase().replaceAll(' ', '-');
 
     return new Promise((resolve, reject) => {
@@ -60,6 +68,13 @@ export class MoviesService {
           resolve([newMovie.toJSON(), categories]);
         })
         .catch((err) => {
+          try {
+            rmdirSync(
+              join(process.cwd(), 'uploads', 'posters', poster.filename),
+            );
+          } catch (error) {
+            console.log(error);
+          }
           reject(new BadRequestException('Categoriy not found ! ' + err));
         });
     });
@@ -112,15 +127,32 @@ export class MoviesService {
     const movieDetailes = await this.movieModel.findByPk(id);
     if (!movieDetailes)
       throw new NotFoundException('Sorry movie detailes not found !');
-    const newWatchHitory = await this.watchHistoryModel.create({
-      user_id,
-      movie_id: movieDetailes.id,
-      watched_duration: 0,
-      watched_percentage: 0.0,
+    const existsHistory = await this.watchHistoryModel.findOne({
+      where: {
+        [Op.and]: {
+          user_id,
+          movie_id: id,
+        },
+      },
     });
+    if (existsHistory) {
+      existsHistory.update({
+        user_id,
+        movie_id: movieDetailes.id,
+        watched_duration: 0,
+        watched_percentage: 0.0,
+        last_watched: new Date(),
+      });
+    } else {
+      const newWatchHitory = await this.watchHistoryModel.create({
+        user_id,
+        movie_id: movieDetailes.id,
+        watched_duration: 0,
+        watched_percentage: 0.0,
+      });
+    }
     return {
       movie_detailes: movieDetailes.toJSON(),
-      newWatchHitory,
     };
   }
 
@@ -150,6 +182,7 @@ export class MoviesService {
 
     if (data.category_ids) {
       try {
+        data.category_ids = [...new Set(data.category_ids)];
         const resolveArray = await this.checkCategoryExists(data.category_ids);
         categories = await this.createJunctionCt(id, resolveArray);
       } catch (error) {
@@ -185,10 +218,11 @@ export class MoviesService {
       data['poster_url'] = this.getUrl(poster.filename, 'posters');
     }
     const result = await this.movieModel.update({ ...data }, { where: { id } });
+    const updatedData = await this.movieModel.findByPk(id);
     if (result[0] === 0) {
       throw new BadRequestException('Movie not updated or invalid data !');
     }
-    return { result, categories };
+    return { updatedData, categories };
   }
   /**
    *

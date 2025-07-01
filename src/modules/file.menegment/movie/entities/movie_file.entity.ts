@@ -11,9 +11,10 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { QualityType } from 'src/core/types/movies.types';
 import { Movies } from './movies.entity';
+import { Models } from 'src/core/types/users.types';
 
 @Table({
-  tableName: 'movie_files',
+  tableName: Models.MovieFile,
   updatedAt: false,
   createdAt: true,
 })

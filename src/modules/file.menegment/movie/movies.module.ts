@@ -18,7 +18,6 @@ import { JwtConnectionModule } from 'src/core/micro-service/jwt/jwt.connection.m
       MovieCategories,
       WatchHistory,
     ]),
-    JwtConnectionModule,
   ],
   controllers: [MoviesController],
   providers: [MoviesService],

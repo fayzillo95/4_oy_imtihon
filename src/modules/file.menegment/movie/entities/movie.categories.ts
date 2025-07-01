@@ -11,8 +11,9 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { MovieCategory } from './category.entity';
 import { Movies } from './movies.entity';
+import { Models } from 'src/core/types/users.types';
 
-@Table({ tableName: 'movie_categories' })
+@Table({ tableName: Models.MovieCategories })
 export class MovieCategories extends Model {
   @PrimaryKey
   @Default(() => uuidv4())

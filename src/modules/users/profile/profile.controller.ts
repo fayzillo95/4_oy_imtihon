@@ -9,14 +9,18 @@ import {
   Req,
   UseGuards,
   BadRequestException,
+  SetMetadata,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { Request } from 'express';
-import { JwtAuthGuard } from 'src/core/guards/jwtInCookieAuth.guard';
 import { validate as isUuid } from 'uuid';
+import { ApiCookieAuth } from '@nestjs/swagger';
+import { Models } from 'src/core/types/users.types';
 
 @Controller('profile')
+@ApiCookieAuth('Profile Controller ')
+@SetMetadata('modelname', Models.Profile)
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
@@ -26,12 +30,12 @@ export class ProfileController {
   }
 
   @Get('get-one/:id')
+  @ApiCookieAuth('Profile in to cookie accesstoken')
   findOne(@Param('id') id: string) {
     return this.profileService.findOne(id);
   }
 
   @Get('may-accaunt')
-  @UseGuards(JwtAuthGuard)
   getMyProfile(@Req() req: Request) {
     const { id } = req['user'];
     return this.profileService.findByUserId(id);

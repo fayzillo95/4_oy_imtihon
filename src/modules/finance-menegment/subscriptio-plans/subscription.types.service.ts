@@ -1,26 +1,70 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSubscriptionPlansDto } from './dto/subscription.types.create.dto';
 import { UpdateSubscriptionPlansDto } from './dto/subscription.types.update.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { SubscriptionPlans } from './entities/subscription.types.entity';
 
 @Injectable()
 export class SubscriptionPlansService {
-  create(data: CreateSubscriptionPlansDto) {
-    return 'This action adds a new financeMenegment';
+  constructor(
+    @InjectModel(SubscriptionPlans)
+    private readonly plansModel: typeof SubscriptionPlans,
+  ) { }
+  async create(data: CreateSubscriptionPlansDto) {
+    const [record, created] = await this.plansModel.findOrCreate({
+      where: { name: data.name },
+      defaults: { ...data }
+    })
+
+    if (!created) {
+      throw new BadRequestException(`Plan already exists name: [ ${data.name} ]`)
+    }
+
+    return {
+      message: 'Plan created successfully',
+      data: record,
+    };
+
   }
 
-  findAll() {
-    return `This action returns all financeMenegment`;
+  async findAll() {
+    const plans = await this.plansModel.findAll()
+    return {
+      message: `This action returns all financeMenegment`,
+      data: plans
+    };
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} financeMenegment`;
+  async findOne(id: string) {
+    const plan = await this.plansModel.findOne({ where: { id: id } })
+    return {
+      message: `This action returns a #${id} financeMenegment`,
+      data: plan
+    };
   }
 
-  update(id: string, data: UpdateSubscriptionPlansDto) {
-    return `This action updates a #${id} financeMenegment`;
+  async update(id: string, data: UpdateSubscriptionPlansDto) {
+    const plan = await this.plansModel.findOne({ where: { id: id } })
+    if (!plan) throw new NotFoundException("Plan not found !")
+    const updatedPlan = await this.plansModel.update({ ...data }, {
+      where: { id: id },
+      returning: true
+    })
+    return {
+      message: `This action updates a #${id} financeMenegment`,
+      oldData: plan,
+      updatedPlan
+    };
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} financeMenegment`;
+  async remove(id: string) {
+    const plan = await this.plansModel.findOne({ where: { id: id } })
+    if (!plan) throw new NotFoundException("Plan not found !")
+    const data = plan.toJSON()
+    await plan.destroy()
+    return {
+      message: `This action removes a #${id} financeMenegment`,
+      oldData: plan,
+    };
   }
 }

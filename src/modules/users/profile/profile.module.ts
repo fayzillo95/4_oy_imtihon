@@ -6,7 +6,7 @@ import { Profile } from './entities/profile.entity';
 import { JwtConnectionModule } from 'src/core/micro-service/jwt/jwt.connection.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Profile]), JwtConnectionModule],
+  imports: [SequelizeModule.forFeature([Profile])],
   controllers: [ProfileController],
   providers: [ProfileService],
   exports: [ProfileService],

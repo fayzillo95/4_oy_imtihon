@@ -11,8 +11,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { Subscription_type } from 'src/core/types/movies.types';
 import { MovieCategories } from './movie.categories';
 import { Movies } from './movies.entity';
+import { Models } from 'src/core/types/users.types';
 
-@Table({ tableName: 'categories', updatedAt: false, createdAt: true })
+@Table({ tableName: Models.Categoris, updatedAt: false, createdAt: true })
 export class MovieCategory extends Model {
   @PrimaryKey
   @Default(() => uuidv4())

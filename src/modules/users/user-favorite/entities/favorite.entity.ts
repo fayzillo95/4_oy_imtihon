@@ -8,13 +8,13 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { BasedModel } from 'src/core/types/users.types';
+import { Models } from 'src/core/types/users.types';
 import { User } from '../../user/entities/user.entity';
 import { Movies } from 'src/modules/file.menegment/movie/entities/movies.entity';
 import { v4 as uuidv4 } from 'uuid';
 
 @Table({
-  tableName: 'fowarites',
+  tableName: Models.Favortie,
   timestamps: true,
 })
 export class Favorite extends Model {

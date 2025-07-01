@@ -11,6 +11,7 @@ import { LoginAuthDto } from './dto/login.auth.dto';
 import { RedisConnectService } from 'src/core/micro-service/cache/redis.connection.service';
 import { ConfigService } from '@nestjs/config';
 import { ProfileService } from '../../users/profile/profile.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +26,8 @@ export class AuthService {
 
   async sendVerifyUrl(userdto: CreateUserDto) {
     await this.userService.checkExists(userdto);
-    const verifyUrl = await this.getVerifyUrl('12345', userdto.email);
+    const code = Math.floor(Math.random() * 1000000);
+    const verifyUrl = await this.getVerifyUrl(`${code}`, userdto.email);
     const emailstatus = await this.mailerService.sendRegisterVerify(
       userdto.email,
       verifyUrl,
@@ -78,6 +80,9 @@ export class AuthService {
 
   async loginAndGetToken(data: LoginAuthDto) {
     const exists = await this.userService.findByEmail(data.email);
+    const checkPass = await bcrypt.compare(data.password, exists?.password);
+    if (!checkPass)
+      throw new BadRequestException('Invalid email or password !');
     if (exists && exists.id && exists.role) {
       return {
         accessToken: await this.jwtService.getAccessToken({

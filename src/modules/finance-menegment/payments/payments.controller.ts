@@ -6,18 +6,27 @@ import {
   Patch,
   Param,
   Delete,
+  SetMetadata,
+  Req,
 } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { Models } from 'src/core/types/users.types';
+import { Request } from 'express';
 
 @Controller('payments')
+@SetMetadata('modelname', Models.Payments)
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
   @Post()
-  create(@Body() createPaymentDto: CreatePaymentDto) {
-    return this.paymentsService.create(createPaymentDto);
+  create(
+    @Body() createPaymentDto: CreatePaymentDto,
+    @Req() req : Request
+  ) {
+    const user_id = req['user'].id
+    return this.paymentsService.create(createPaymentDto,user_id);
   }
 
   @Get()
