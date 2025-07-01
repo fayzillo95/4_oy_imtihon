@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -15,7 +16,7 @@ export class UserService {
   constructor(
     @InjectModel(User) private readonly userModel: typeof User,
     private readonly profileService: ProfileService,
-  ) {}
+  ) { }
 
   async create(createUserDto: CreateUserDto, isVerify = false) {
     await this.checkExists(createUserDto);
@@ -36,13 +37,15 @@ export class UserService {
     return exists;
   }
 
-  async checkExists(createUserDto: CreateUserDto) {
-    const exists = [
-      await this.findByEmail(createUserDto.email),
-      await this.findByUsername(createUserDto.username),
-    ];
-    if (exists[0]) throw new ConflictException('User eamil already exists !');
-    if (exists[1]) throw new ConflictException('Username already exists !');
+  async checkExists(data: {email? : string, username? : string}) {
+      if(data.email){
+        const existsByEmail = await this.findByEmail(data.email)
+        if (existsByEmail) throw new ConflictException('User eamil already exists !');
+      }
+      if(data.username){
+        const existsByUsername = await this.findByUsername(data.username)
+        if (existsByUsername) throw new ConflictException('Username already exists !');
+      }
   }
 
   async findAll() {
@@ -53,30 +56,52 @@ export class UserService {
     const user = await this.userModel.findByPk(id);
     return user;
   }
-  async findOne(id: number): Promise<User | null> {
+  async findOne(id: string): Promise<User | null> {
     const exists = await this.userModel.findOne({
-      where: { id },
+      where: { id: id },
     });
-    return exists;
+    if (!exists) throw new NotFoundException('user not found')
+    return exists?.toJSON() || null;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, data: UpdateUserDto) {
+    if (Object.values(data).length === 0) throw new BadRequestException("Invalid data empty values !")
+    const existsUser = await this.userModel.findOne({
+      where: {
+        id: id
+      }
+    })
+    if(!existsUser) throw new NotFoundException(`User not found by id : [${id}]`)
+    if(data.password) {
+      data.password = await bcrypt.hash(data.password,10)
+    }
+    const oldUser = await this.userModel.findOne({
+      where: {
+        id: id
+      }
+    })
+    await this.checkExists(data)
+    existsUser.update({...data})
+    return {
+      message  : `This action updates a #${id} user`,
+      oldUser,
+      updatedUser : existsUser
+    };
   }
 
   async remove(id: string) {
-    const existsUser = await this.userModel.findByPk(id);
-    if (!existsUser)
-      throw new NotFoundException(`User not found by id : [ ${id} ]`);
+    const existsUser = await this.userModel.findOne({where : {id : id}});
+    if (!existsUser) throw new NotFoundException(`User not found by id : [ ${id} ]`);
     await existsUser.destroy();
-    return `This action removes a #${id} user`;
+    return {message : `This action removes a #${id} user`};
   }
 
   async destroyMyAccaunt(id: string) {
-    const existsUser = await this.userModel.findByPk(id);
+    const existsUser = await this.userModel.findOne({where : {id : id}});
     if (!existsUser)
       throw new NotFoundException(`User not found by id : [ ${id} ]`);
     await existsUser.destroy();
     return `This action removes a #${id} user`;
   }
 }
+

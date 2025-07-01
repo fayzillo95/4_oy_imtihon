@@ -4,7 +4,7 @@ import { Subscription_type } from 'src/core/types/movies.types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const storagePoster = diskStorage({
-  destination: './uploads/posters',
+  destination: './src/common/utils/uploads/posters',
   filename: (req, file, cb) => {
     const fileName = uuidv4() + extname(file.originalname);
     cb(null, fileName);
@@ -12,7 +12,7 @@ export const storagePoster = diskStorage({
 });
 
 export const storageFile = diskStorage({
-  destination: './uploads/files',
+  destination: './src/common/utils/uploads/files',
   filename(req, file, callback) {
     const newName = uuidv4() + extname(file.originalname);
     callback(null, newName);

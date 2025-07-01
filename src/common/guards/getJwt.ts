@@ -4,7 +4,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { JwtConnectionService } from '../micro-service/jwt/jwt.connection.service';
+import { JwtConnectionService } from '../../core/micro-service/jwt/jwt.connection.service';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 

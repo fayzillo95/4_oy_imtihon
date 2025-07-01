@@ -63,21 +63,22 @@ export class User extends Model {
   })
   declare role?: string;
 
-  @HasOne(() => Profile)
+  @HasOne(() => Profile,{onDelete: 'CASCADE'})
   profile: Profile;
 
-  @HasMany(() => Favorite)
+  @HasMany(() => Favorite,{onDelete: 'CASCADE'})
   favorite: Favorite[];
 
-  @HasMany(() => WatchHistory)
+  @HasMany(() => WatchHistory,{onDelete: 'CASCADE'})
   watch_history: WatchHistory[];
 
-  @HasMany(() => Reviews)
+  @HasMany(() => Reviews,{onDelete: 'CASCADE'})
   reciews: Reviews[];
 
-  @HasMany(() => Permission)
+  @HasMany(() => Permission,{onDelete: 'CASCADE'})
   permissions: Permission[];
 
-  @HasMany(() => UserSubscription)
+  @HasMany(() => UserSubscription,{onDelete: 'CASCADE'})
   subscriptions: UserSubscription[];
 }
+// cascade qo'shildi 

@@ -16,15 +16,22 @@ export class PaymentsService {
     @InjectModel(SubscriptionPlans) private readonly planModel : typeof SubscriptionPlans
   ) {}
 
-  async create(data : CreatePaymentDto, user_id : string) {
+  async create(data : CreatePaymentDto, userId : string) {
     const {user_subscription_id : u_sb_id, payment_method,payment_details : detailes} = data
+
     const user_sub = await this.u_planModel.findOne({where : {user_id : u_sb_id}})
 
-    return 'This action adds a new payment';
+    return {message:'This action adds a new payment',
+      user_sub,
+      data
+    };
   }
 
-  findAll() {
-    return `This action returns all payments`;
+  async findAll() {
+    const result= await this.paymentsModel.findAll()
+    return {message:`This action returns all payments`,
+      result
+    };
   }
 
   findOne(id: number) {

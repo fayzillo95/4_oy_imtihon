@@ -4,7 +4,7 @@ import { Transform } from "class-transformer";
 import { IsNumber, IsUUID } from "class-validator";
 
 export class CreateWatchHistoryDto {
-    @ApiProperty({example : "ewcewce-cewce-cewced-cewecw"})
+    @ApiProperty({example : "9b541e56-99c3-4fa2-a0fc-8b3b3009da6d"})
     @IsUUID()
     movie_id : string
 

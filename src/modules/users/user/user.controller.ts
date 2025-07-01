@@ -27,12 +27,12 @@ export class UserController {
 
   @Get('get-one/:id')
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    return this.userService.findOne(id) || "topilmadi";
   }
 
   @Patch('update-one/:id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+    return this.userService.update(id, updateUserDto);
   }
 
   @Delete('delete-one/:id')

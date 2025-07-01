@@ -80,10 +80,10 @@ export class AuthService {
 
   async loginAndGetToken(data: LoginAuthDto) {
     const exists = await this.userService.findByEmail(data.email);
-    const checkPass = await bcrypt.compare(data.password, exists?.password);
-    if (!checkPass)
-      throw new BadRequestException('Invalid email or password !');
     if (exists && exists.id && exists.role) {
+      const checkPass = await bcrypt.compare(data.password, exists?.password);
+      if (!checkPass)
+        throw new BadRequestException('Invalid email or password !');
       return {
         accessToken: await this.jwtService.getAccessToken({
           id: exists.id,

@@ -18,6 +18,7 @@ export class UserSubscriptionsService {
 
   async create(data: CreateUserSubscriptionDto, user_id: string) {
     const user = await this.userModel.findOne({ where: { id: user_id } })
+    console.log(user_id, user)
     if (!user) throw new NotFoundException("User not found !")
 
     const plan = await this.plansModel.findOne({ where: { id: data.plan_id } })
@@ -67,7 +68,7 @@ export class UserSubscriptionsService {
     }
   }
   async findOne(id: string) {
-    const u_SubScription = await this.plansModel.findOne({
+    const u_SubScription = await this.u_plansModel.findOne({
       where: { id: id }
     })
     return {

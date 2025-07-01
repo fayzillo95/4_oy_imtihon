@@ -14,9 +14,9 @@ import { UserSubscriptionsModule } from './modules/finance-menegment/user_subscr
 import { WatchHistoryModule } from './modules/users/watch-history/watch-history.module';
 import { UserReviewsModule } from './modules/users/user-reviews/user-reviews.module';
 import { APP_GUARD } from '@nestjs/core';
-import { GetJwt } from './core/guards/getJwt';
+import { GetJwt } from './common/guards/getJwt';
 import { JwtConnectionModule } from './core/micro-service/jwt/jwt.connection.module';
-import { RoleGuard } from './core/guards/permission.guard';
+import { RoleGuard } from './common/guards/permission.guard';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Permission } from './modules/security/admin/entities/permission.entity';
 

@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { InjectModel } from '@nestjs/sequelize';
-import { Actions } from '../types/users.types';
+import { Actions } from '../../core/types/users.types';
 import { Permission } from 'src/modules/security/admin/entities/permission.entity';
 import { Request } from 'express';
 import { Op } from 'sequelize';

@@ -7,6 +7,7 @@ import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { Profile } from './entities/profile.entity';
 import { InjectModel } from '@nestjs/sequelize';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class ProfileService {
@@ -25,6 +26,7 @@ export class ProfileService {
   async findByUserId(user_id: string): Promise<Profile | null> {
     const profile = await this.profileModel.findOne({
       where: { user_id },
+      include : [{model : User}]
     });
     return profile;
   }

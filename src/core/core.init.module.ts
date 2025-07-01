@@ -8,11 +8,11 @@ import { join } from 'path';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'uploads', 'posters'),
+      rootPath: join(process.cwd(),"src","common","utils", 'uploads', 'posters'),
       serveRoot: '/posters',
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'uploads', 'fies'),
+      rootPath: join(process.cwd(),"src","common","utils", 'uploads', 'fies'),
       serveRoot: '/files',
     }),
     DatabaseConnectModule,
