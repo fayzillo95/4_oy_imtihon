@@ -37,9 +37,10 @@ export class AuthController {
       maxAge: 168 * (60 * 1000 * 60),
       httpOnly: true,
     });
-    const host = this.config.get<string>('APP_HOST');
-    const port = this.config.get<string>('APP_PORT');
-    res.redirect(`http://${host}:${port}/api/profile/may-accaunt`);
+
+    const baseUrl = process.env.BASE_URL || this.config.get<string>("BASE_URL")
+    
+    res.redirect(`${baseUrl}/api/profile/may-accaunt`);
     return result.accessToken;
   }
   @Post('login')
@@ -54,9 +55,9 @@ export class AuthController {
       maxAge: 168 * (60 * 1000 * 60),
       httpOnly: true,
     });
-    const host = this.config.get<string>('APP_HOST');
-    const port = this.config.get<string>('APP_PORT');
-    res.redirect(`http://${host}:${port}/api/profile/may-accaunt`);
+
+    const baseUrl = process.env.BASE_URL || this.config.get<string>("BASE_URL")
+    res.redirect(`${baseUrl}/api/profile/may-account`);
     return accessToken;
   }
 }

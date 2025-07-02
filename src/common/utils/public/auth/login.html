@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="/public/assets/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div>
+      <a href="http://localhost:3000/public/index.html">Home</a>
+      <a href="http://localhost:3000/public/auth/login.html">Login</a>
+      <a href="http://localhost:3000/public/auth/register.html">Register</a>
+      <a href="http://localhost:3000/public/profile/index.html">Profile</a>
+    </div>
+    <div>
+      <a href="http://localhost:3000/api/swagger" target="_blank">Swagger</a>
+    </div>
+  </nav>
+  <div class="container">
+    <h1>Login</h1>
+    <form action="http://localhost:3000/api/auth/login" method="post" id="loginForm">
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+    <div id="login-status"></div>
+  </div>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        console.log('Serverdan qaytgan maʼlumot:', result);
+        if(result && result.user) {
+          document.getElementById('login-status').innerHTML = '<span style="color:green;">Login successful!</span>';
+          setTimeout(function() {
+            window.location.href = 'http://localhost:3000/public/profile/index.html';
+          }, 1200);
+        } else {
+          document.getElementById('login-status').innerHTML = '<span style="color:red;">Login failed!</span>';
+        }
+      } catch (err) {
+        document.getElementById('login-status').innerHTML = `<span style="color:red;">Serverda xatolik: ${err.message}</span>`;
+      }
+    });
+  </script>
+</body>
+</html>

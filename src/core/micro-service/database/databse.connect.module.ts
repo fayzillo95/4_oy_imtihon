@@ -43,6 +43,7 @@ import { Payment } from 'src/modules/finance-menegment/payments/entities/payment
           Payment,
         ],
         logQueryParameters: false,
+        timezone: '+05:00', // Adjust to your timezone
         logging: false,
       }),
     }),

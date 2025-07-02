@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="/public/assets/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div>
+      <a href="http://localhost:3000/api/public/home/index.html">Home</a>
+      <a href="http://localhost:3000/api/public/auth/login.html">Login</a>
+      <a href="http://localhost:3000/api/public/auth/register.html">Register</a>
+      <a href="http://localhost:3000/api/public/profile/index.html">Profile</a>
+    </div>
+    <div>
+      <a href="http://localhost:3000/api/swagger" target="_blank">Swagger</a>
+    </div>
+  </nav>
+  <div class="container">
+    <h1>Profile</h1>
+    <div id="profile-info">
+      <p>Profil ma'lumotlari bu yerda chiqadi.</p>
+    </div>
+  </div>
+  <script>
+    // Universal API fetcher and renderer for profile endpoints
+    async function fetchProfile(endpoint, method = 'GET', body = null) {
+      let options = { method, credentials: 'include' };
+      if (body) {
+        options.headers = { 'Content-Type': 'application/json' };
+        options.body = JSON.stringify(body);
+      }
+      const res = await fetch(endpoint, options);
+      try {
+        const data = await res.json();
+        console.log('Serverdan qaytgan maʼlumot:', data); // <-- log to console
+        renderProfile(data);
+      } catch {
+        document.getElementById('profile-info').innerHTML = '<span style="color:red;">Maʼlumot topilmadi yoki xatolik!</span>';
+      }
+    }
+    function renderProfile(data) {
+      if (!data || typeof data !== 'object') {
+        document.getElementById('profile-info').innerHTML = '<span style="color:red;">Maʼlumot topilmadi!</span>';
+        return;
+      }
+      let html = '<ul>';
+      for (const key in data) {
+        if (typeof data[key] === 'object' && data[key] !== null) {
+          html += `<li><b>${key}:</b> <pre>${JSON.stringify(data[key], null, 2)}</pre></li>`;
+        } else {
+          html += `<li><b>${key}:</b> ${data[key]}</li>`;
+        }
+      }
+      html += '</ul>';
+      document.getElementById('profile-info').innerHTML = html;
+    }
+    // Example: get my profile on load
+    fetchProfile('/api/profile/may-accaunt');
+    // You can add buttons/forms to call other endpoints and reuse fetchProfile
+  </script>
+</body>
+</html>

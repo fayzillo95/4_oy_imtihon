@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="http://localhost:3000/api/public/home/style.css">
+</head>
+<body>
+  <h1>Welcome to the Home Page</h1>
+  <p>This is a simple HTML document to demonstrate the structure of a web page.</p>
+  <footer>
+    <p>&copy; 2023 Your Company Name</p>
+  </footer>
+  <form action="http://localhost:3000/api/auth/register" class="navbar-register" method="post" id="registerForm">
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <button type="submit">Register</button>
+  </form>
+  <div id="verify-link-container" style="text-align:center; margin-top:20px;"></div>
+  <script src="http://localhost:3000/api/public/home/main.js"></script>
+  <script>
+    // Email verify link bosilganda profile pagega o'tkazish
+    document.addEventListener('click', function(e) {
+      if (e.target && e.target.matches('#verify-link-container a')) {
+        // 1-2 sekunddan so'ng profile pagega o'tkazish
+        setTimeout(function() {
+          window.location.href = 'http://localhost:3000/api/public/profile/index.html';
+        }, 1500);
+      }
+    });
+  </script>
+</body>
+</html>

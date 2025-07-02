@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Detail</title>
+  <link rel="stylesheet" href="/public/assets/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div>
+      <a href="/public/index.html">Home</a>
+      <a href="/public/auth/login.html">Login</a>
+      <a href="/public/auth/register.html">Register</a>
+      <a href="/public/profile/index.html">Profile</a>
+    </div>
+    <div>
+      <a href="/api/swagger" target="_blank">Swagger</a>
+    </div>
+  </nav>
+  <div class="container">
+    <h1>Profile Detail</h1>
+    <input type="text" id="profileId" placeholder="Profile ID">
+    <button onclick="fetchProfile()">Get Profile</button>
+    <div id="profile-detail"></div>
+  </div>
+  <script>
+    async function fetchProfile() {
+      const id = document.getElementById('profileId').value;
+      const res = await fetch(`/api/profile/get-one/${id}`);
+      const profile = await res.json();
+      let html = `<ul>`;
+      for(const key in profile) {
+        html += `<li><b>${key}:</b> ${profile[key]}</li>`;
+      }
+      html += `</ul>`;
+      document.getElementById('profile-detail').innerHTML = html;
+    }
+  </script>
+</body>
+</html>

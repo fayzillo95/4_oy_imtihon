@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Profile</title>
+  <link rel="stylesheet" href="/public/assets/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div>
+      <a href="/public/index.html">Home</a>
+      <a href="/public/auth/login.html">Login</a>
+      <a href="/public/auth/register.html">Register</a>
+      <a href="/public/profile/index.html">Profile</a>
+    </div>
+    <div>
+      <a href="/api/swagger" target="_blank">Swagger</a>
+    </div>
+  </nav>
+  <div class="container">
+    <h1>Update Profile</h1>
+    <form id="updateProfileForm">
+      <input type="text" name="id" placeholder="Profile ID" required>
+      <input type="text" name="full_name" placeholder="Full Name">
+      <input type="text" name="phone" placeholder="Phone">
+      <input type="text" name="country_id" placeholder="Country">
+      <button type="submit">Update</button>
+    </form>
+    <div id="update-status"></div>
+  </div>
+  <script>
+    document.getElementById('updateProfileForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      const id = data.id;
+      delete data.id;
+      try {
+        const response = await fetch(`/api/profile/update-one/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if(response.ok) {
+          document.getElementById('update-status').innerHTML = '<span style="color:green;">Profile updated!</span>';
+        } else {
+          document.getElementById('update-status').innerHTML = '<span style="color:red;">Update failed!</span>';
+        }
+      } catch (err) {
+        document.getElementById('update-status').innerHTML = `<span style="color:red;">Serverda xatolik: ${err.message}</span>`;
+      }
+    });
+  </script>
+</body>
+</html>
