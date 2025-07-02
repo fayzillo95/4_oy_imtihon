@@ -33,7 +33,7 @@ async function bootstrap() {
 
   app.useGlobalFilters(new ErrorHandler());
 
-  // await app.listen(process.env.APP_PORT ?? 12312);
+  await app.listen(process.env.PORT ?? 15975);
 
   // console.log(
   //   `Server running 😁  http://${process.env.APP_HOST}:${process.env.APP_PORT}/api`,
