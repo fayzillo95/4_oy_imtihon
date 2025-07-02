@@ -35,12 +35,12 @@ async function bootstrap() {
 
   // await app.listen(process.env.APP_PORT ?? 12312);
 
+  // console.log(
+  //   `Server running 😁  http://${process.env.APP_HOST}:${process.env.APP_PORT}/api`,
+  // );
+  console.log(`✅✅✅✅✅ Server running 😁  ${process.env.BASE_URL}/api`)
   console.log(
-    `Server running 😁  http://${process.env.APP_HOST}:${process.env.APP_PORT}/api`,
-  );
-  console.log(`✅✅✅✅✅ ${process.env.BASE_URL}/api`)
-  console.log(
-    `💹✅ Swagger  : http://${process.env.APP_HOST}:${process.env.APP_PORT}/api/swagger`,
+    `💹✅ Swagger  : ${process.env.BASE_URL}/api/swagger`,
   );
 }
 bootstrap();
