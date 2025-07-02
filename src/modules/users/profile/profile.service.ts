@@ -13,6 +13,7 @@ import { User } from '../user/entities/user.entity';
 export class ProfileService {
   constructor(
     @InjectModel(Profile) private readonly profileModel: typeof Profile,
+    @InjectModel(User) private readonly userModel: typeof User,
   ) {}
   async create(createProfileDto: CreateProfileDto) {
     const old_profile = await this.findByUserId(createProfileDto.user_id);
@@ -61,6 +62,21 @@ export class ProfileService {
     const exists = await this.findOne(id);
     if (!exists) throw new NotFoundException('Profile not found !');
     const deletedSts = await this.profileModel.destroy({ where: { id } });
+    return { deletedSts, exists };
+  }
+  async deleteMyAccount(id: string) {
+    const exists = await this.findByUserId(id);
+    if (!exists) throw new NotFoundException('Profile not found !');
+    const deletedSts = await this.profileModel.destroy({ where: { id } });
+    if (deletedSts === 0) {
+      throw new NotFoundException('Profile not found or already deleted !');
+    }
+    // Also delete the user associated with this profile
+    await this.userModel.destroy({ where: { id: exists.user_id } });
+    // Return the status of the deletion and the existing profile
+    if (deletedSts === 0) {
+      throw new NotFoundException('Profile not found or already deleted !');
+    }
     return { deletedSts, exists };
   }
 }

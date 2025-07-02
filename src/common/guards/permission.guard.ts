@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { InjectModel } from '@nestjs/sequelize';
-import { Actions } from '../../core/types/users.types';
+import { Actions, Models } from '../../core/types/users.types';
 import { Permission } from 'src/modules/security/admin/entities/permission.entity';
 import { Request } from 'express';
 import { Op } from 'sequelize';
@@ -21,9 +21,18 @@ export class RoleGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const modelname = this.reflector.get<string>(
       'modelname',
-      context.getHandler(),
+      context.getClass(),
     );
     const request = context.switchToHttp().getRequest();
+    // public path  /api/users/delete/my-account
+    if (["profile","users"].includes(modelname) && request.path.includes('delete/my-account') ) {
+      return true;
+    }
+    console.log("Public path not found : ", modelname, request.path);
+    // public path  /api/public/auth/login
+    if (modelname === 'auth' && request.path == '/api/public/auth/login') {
+      return true;
+    }
     const permissionSts = await this.checkPermission(context, request);
     return permissionSts;
   }

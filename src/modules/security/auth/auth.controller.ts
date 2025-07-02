@@ -39,8 +39,8 @@ export class AuthController {
     });
 
     const baseUrl = process.env.BASE_URL || this.config.get<string>("BASE_URL")
-    
-    res.redirect(`${baseUrl}/api/profile/may-accaunt`);
+
+    res.redirect(`${baseUrl}/api/profile/my-account`);
     return result.accessToken;
   }
   @Post('login')
@@ -57,7 +57,7 @@ export class AuthController {
     });
 
     const baseUrl = process.env.BASE_URL || this.config.get<string>("BASE_URL")
-    res.redirect(`${baseUrl}/api/profile/may-account`);
+    res.redirect(`${baseUrl}/api/profile/my-account`);
     return accessToken;
   }
 }

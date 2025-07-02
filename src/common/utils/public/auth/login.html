@@ -9,18 +9,18 @@
 <body>
   <nav class="navbar">
     <div>
-      <a href="http://localhost:3000/public/index.html">Home</a>
-      <a href="http://localhost:3000/public/auth/login.html">Login</a>
-      <a href="http://localhost:3000/public/auth/register.html">Register</a>
-      <a href="http://localhost:3000/public/profile/index.html">Profile</a>
+      <a href="http://localhost:15975/public/home/index.html">Home</a>
+      <a href="http://localhost:15975/public/auth/login.html">Login</a>
+      <a href="http://localhost:15975/public/auth/register.html">Register</a>
+      <a href="http://localhost:15975/public/profile/index.html">Profile</a>
     </div>
     <div>
-      <a href="http://localhost:3000/api/swagger" target="_blank">Swagger</a>
+      <a href="http://localhost:15975/api/swagger" target="_blank">Swagger</a>
     </div>
   </nav>
   <div class="container">
     <h1>Login</h1>
-    <form action="http://localhost:3000/api/auth/login" method="post" id="loginForm">
+    <form action="http://localhost:15975/api/public/auth/login" method="post" id="loginForm">
       <input type="email" name="email" placeholder="Email" required>
       <input type="password" name="password" placeholder="Password" required>
       <button type="submit">Login</button>
@@ -44,7 +44,7 @@
         if(result && result.user) {
           document.getElementById('login-status').innerHTML = '<span style="color:green;">Login successful!</span>';
           setTimeout(function() {
-            window.location.href = 'http://localhost:3000/public/profile/index.html';
+            window.location.href = 'http://localhost:15975/api/public/profile/index.html';
           }, 1200);
         } else {
           document.getElementById('login-status').innerHTML = '<span style="color:red;">Login failed!</span>';

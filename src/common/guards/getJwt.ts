@@ -31,15 +31,17 @@ export class GetJwt implements CanActivate {
     }
   }
   async isPublic(req: Request, ctx: ExecutionContext) {
-    const publicList = this.reflector.getAllAndOverride('isPublic', [
-      ctx.getClass(),
-      ctx.getHandler(),
-    ]);
-    // console.log("isPublic function getAllAndOverrirde reflector function returns -> ",publicList)
-    if (publicList) {
-      return false;
+
+    const requiredToken = this.reflector.getAllAndOverride(
+      'requiredToken',
+      [ctx.getClass(), ctx.getHandler()],
+    );
+    // console.log("isPublic function getAllAndOverrirde reflector function returns -> ",
+    // publicList, requiredToken);
+    if (requiredToken === false) {
+      return true;
     } else {
-      const token = req.cookies. accessToken;
+      const token = req.cookies.accessToken;
       if (!token) throw new UnauthorizedException('Token not found !');
       return token;
     }
